@@ -1,6 +1,10 @@
 <!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><title id="help-page-title">Route 9 - How to Play</title><style>
+* {
+  -webkit-tap-highlight-color: transparent;  /* حذف هایلایت آبی هنگام لمس */
+  -webkit-touch-callout: none;               /* جلوگیری از منوی طولانی‌فشار در iOS */
+}
 body{padding:66px 20px 40px;background-color:#0c1015;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;user-select:none}
-:root{--bg-color:#0c1015;--card-bg:#151a22;--border-color:#252e39;--text-main:#e6edf3;--text-muted:#8b949e;--red-color:#ff3b30;--blue-color:#007aff;--green-color:#34c759;--yellow-color:#ffcc00;-webkit-tap-highlight-color:transparent}
+:root{--bg-color:#0c1015;--card-bg:#151a22;--border-color:#252e39;--text-main:#e6edf3;--text-muted:#8b949e;--red-color:#ff3b30;--blue-color:#007aff;--green-color:#34c759;--yellow-color:#ffcc00}
 .help-wrap{width:100%;max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 .help-top{position:fixed;top:14px;left:14px;z-index:250}
 /* ===== آیکون بغل دکمه بازگشت (همیشه سمت چپ) ===== */
@@ -79,7 +83,7 @@ body{padding:66px 20px 40px;background-color:#0c1015;color:#e6edf3;font-family:-
         </svg>
       </span>
       <span class="btn-text">
-        <span class="title" id="btn-regular-title">مود مسیر ۹</span>
+        <span class="title" id="btn-regular-title">مسیر ۹</span>
         <span class="desc" id="btn-regular-desc">مسابقه کلاسیک دو و چهار نفره</span>
       </span>
     </button>
@@ -90,7 +94,7 @@ body{padding:66px 20px 40px;background-color:#0c1015;color:#e6edf3;font-family:-
         </svg>
       </span>
       <span class="btn-text">
-        <span class="title" id="btn-hunter-title">مود گرگ و میش</span>
+        <span class="title" id="btn-hunter-title">گرگ مقابل میش</span>
         <span class="desc" id="btn-hunter-desc">شکارچی در برابر بازمانده</span>
       </span>
     </button>
@@ -110,7 +114,7 @@ body{padding:66px 20px 40px;background-color:#0c1015;color:#e6edf3;font-family:-
     <div class="step-card active"><div class="step-num">1</div><div class="step-body"><h3 id="h1-t">نقش‌های متفاوت</h3><p id="h1-d">در این مود، بازیکنان نقش‌های متفاوتی دارند. یکی <span class="tag-red">شکارچی (قرمز)</span> و دیگری <span class="tag-blue">بازمانده (آبی)</span> است. بازمانده باید خود را به خط قرمز بالای صفحه برساند و شکارچی باید او را <strong>شکار کند</strong>!</p><div class="step-diagram"><svg width="220" height="220" viewBox="0 0 220 220"><rect x="4" y="4" width="212" height="212" rx="10" fill="#1b2129" stroke="#282f3a" stroke-width="2"/><g stroke="#282f3a" stroke-width="1"><line x1="4" y1="77" x2="216" y2="77"/><line x1="4" y1="150" x2="216" y2="150"/><line x1="77" y1="4" x2="77" y2="216"/><line x1="150" y1="4" x2="150" y2="216"/></g><rect x="4" y="4" width="212" height="8" fill="#ff3b30" opacity="0.5"/><circle cx="110" cy="187" r="16" fill="#007aff"/><circle cx="110" cy="40" r="16" fill="#ff3b30"/><text x="80" y="100" fill="#c0c9d6" font-size="11" font-family="sans-serif">بازمانده</text><text x="145" y="100" fill="#c0c9d6" font-size="11" font-family="sans-serif">شکارچی</text><path d="M110 90 L110 40" stroke="#facc15" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#arrow)"/><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#facc15"/></marker></defs></svg></div></div></div>
     <div class="step-card active"><div class="step-num">2</div><div class="step-body"><h3 id="h2-t">چگونه شکارچی برنده می‌شود؟</h3><p id="h2-d">شکارچی با دو روش می‌تواند برنده شود: <strong>۱. شکار مستقیم:</strong> رفتن روی خانه‌ای که بازمانده در آن قرار دارد. <strong>۲. محاصره تدریجی:</strong> هر بار که شکارچی در یک خانه مجاور بازمانده قرار بگیرد، یک نشانگر قرمز زیر پای بازمانده روشن می‌شود. اگر این اتفاق <strong>۷ بار</strong> بیفتد، بازمانده گیر افتاده است!</p><div class="step-diagram"><svg width="220" height="220" viewBox="0 0 220 220"><rect x="4" y="4" width="212" height="212" rx="10" fill="#1b2129" stroke="#282f3a" stroke-width="2"/><g stroke="#282f3a" stroke-width="1"><line x1="4" y1="77" x2="216" y2="77"/><line x1="4" y1="150" x2="216" y2="150"/><line x1="77" y1="4" x2="77" y2="216"/><line x1="150" y1="4" x2="150" y2="216"/></g><circle cx="70" cy="110" r="16" fill="#007aff"/><g transform="translate(46, 140)"><circle cx="0" cy="0" r="4.5" fill="#ff3b30"/><circle cx="14" cy="0" r="4.5" fill="#ff3b30"/><circle cx="28" cy="0" r="4.5" fill="#ff3b30"/><circle cx="42" cy="0" r="4.5" fill="#ff3b30"/><circle cx="56" cy="0" r="4.5" fill="#ff3b30"/><circle cx="70" cy="0" r="4.5" fill="#3a2020"/><circle cx="84" cy="0" r="4.5" fill="#3a2020"/></g><text x="60" y="165" fill="#ff3b30" font-size="10" font-family="sans-serif">۵/۷ بار</text><circle cx="70" cy="110" r="30" fill="none" stroke="#ff3b30" stroke-width="3" opacity="0.5" stroke-dasharray="6 4"/><circle cx="160" cy="110" r="16" fill="#ff3b30"/><path d="M140 110 L98 110" stroke="#facc15" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#arrow2)"/><defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#facc15"/></marker></defs></svg></div></div></div>
     <div class="step-card active"><div class="step-num">3</div><div class="step-body"><h3 id="h3-t">چگونه بازمانده برنده می‌شود؟</h3><p id="h3-d">بازمانده <strong>فقط یک راه</strong> برای پیروزی دارد: رسیدن به خط قرمز بالای صفحه. او باید با استفاده از حرکت‌های هوشمندانه و دیوارهای اصولی، از دست شکارچی فرار کند و خودش را به خانه‌ی هدف برساند.</p><div class="step-diagram"><svg width="220" height="160" viewBox="0 0 220 160"><rect x="4" y="4" width="212" height="152" rx="10" fill="#1b2129" stroke="#282f3a" stroke-width="2"/><rect x="4" y="4" width="212" height="8" fill="#ff3b30" opacity="0.5"/><path d="M110 150 L110 40" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5 5" marker-end="url(#arrow-green)"/><circle cx="110" cy="150" r="16" fill="#007aff"/><defs><marker id="arrow-green" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2ecc71"/></marker></defs></svg></div></div></div>
-    <div class="step-card active"><div class="step-num">4</div><div class="step-body"><h3 id="h4-t">نکات مهم</h3><p id="h4-d"><strong>⚠️ تفاوت با مودهای دیگر:</strong> در این مود، پیروزی فقط رسیدن به خط نیست. شکارچی باید استراتژی تعقیب داشته باشد و بازمانده باید با دیوارهای هوشمندانه او را عقب نگه دارد.<br><strong>🚨 نشانگرهای هشدار:</strong> هر وقت نشانگرهای قرمز زیر پای بازمانده شروع به روشن شدن کنند، یعنی شکارچی در حال نزدیک شدن است و بازمانده باید هرچه سریع‌تر راه فرار را پیدا کند!</p><div class="step-diagram"><svg width="220" height="220" viewBox="0 0 220 220"><rect x="4" y="4" width="212" height="212" rx="10" fill="#1b2129" stroke="#282f3a" stroke-width="2"/><g stroke="#282f3a" stroke-width="1"><line x1="4" y1="77" x2="216" y2="77"/><line x1="4" y1="150" x2="216" y2="150"/><line x1="77" y1="4" x2="77" y2="216"/><line x1="150" y1="4" x2="150" y2="216"/></g><rect x="6" y="73" width="140" height="8" rx="4" fill="#acb8c8"/><circle cx="70" cy="110" r="16" fill="#007aff"/><circle cx="160" cy="110" r="16" fill="#ff3b30"/><text x="45" y="90" fill="#c0c9d6" font-size="11" font-family="sans-serif">بازمانده</text><text x="135" y="90" fill="#c0c9d6" font-size="11" font-family="sans-serif">شکارچی</text><path d="M128 110 L98 110" stroke="#facc15" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#arrow2)"/><defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#facc15"/></marker></defs></svg></div></div></div>
+    <div class="step-card active"><div class="step-num">4</div><div class="step-body"><h3 id="h4-t">نکات مهم</h3><p id="h4-d"><strong> تفاوت با مودهای دیگر:</strong> در این مود، پیروزی فقط رسیدن به خط نیست. شکارچی باید استراتژی تعقیب داشته باشد و بازمانده باید با دیوارهای هوشمندانه او را عقب نگه دارد.<br><strong>نشانگرهای هشدار:</strong> هر وقت نشانگرهای قرمز زیر پای بازمانده شروع به روشن شدن کنند، یعنی شکارچی در حال نزدیک شدن است و بازمانده باید هرچه سریع‌تر راه فرار را پیدا کند!</p><div class="step-diagram"><svg width="220" height="220" viewBox="0 0 220 220"><rect x="4" y="4" width="212" height="212" rx="10" fill="#1b2129" stroke="#282f3a" stroke-width="2"/><g stroke="#282f3a" stroke-width="1"><line x1="4" y1="77" x2="216" y2="77"/><line x1="4" y1="150" x2="216" y2="150"/><line x1="77" y1="4" x2="77" y2="216"/><line x1="150" y1="4" x2="150" y2="216"/></g><rect x="6" y="73" width="140" height="8" rx="4" fill="#acb8c8"/><circle cx="70" cy="110" r="16" fill="#007aff"/><circle cx="160" cy="110" r="16" fill="#ff3b30"/><text x="45" y="90" fill="#c0c9d6" font-size="11" font-family="sans-serif">بازمانده</text><text x="135" y="90" fill="#c0c9d6" font-size="11" font-family="sans-serif">شکارچی</text><path d="M128 110 L98 110" stroke="#facc15" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#arrow2)"/><defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#facc15"/></marker></defs></svg></div></div></div>
   </div>
 </div>
 
@@ -121,8 +125,8 @@ const T = {
     sub: 'مود مورد نظر خود را انتخاب کنید',
     back: 'بازگشت',
     btns: {
-      regular: { title: 'مود مسیر ۹', desc: 'مسابقه کلاسیک دو و چهار نفره' },
-      hunter: { title: 'مود گرگ و میش', desc: 'شکارچی در برابر بازمانده' }
+      regular: { title: 'مسیر ۹', desc: 'مسابقه کلاسیک دو و چهار نفره' },
+      hunter: { title: 'گرگ مقابل میش', desc: 'شکارچی در برابر بازمانده' }
     },
     regular: {
       s1t: 'هدف بازی', s1d: 'در حالت دو یا چهار نفره، هدف ساده است: <strong>مهره‌ی خود را به سمت مقابلِ صفحه برسانید</strong>. کسی که زودتر به خط پایان برسد، برنده است.',
@@ -135,7 +139,7 @@ const T = {
       h1t: 'نقش‌های متفاوت', h1d: 'در این مود، بازیکنان نقش‌های متفاوتی دارند. یکی <span class="tag-red">شکارچی (قرمز)</span> و دیگری <span class="tag-blue">بازمانده (آبی)</span> است. بازمانده باید خود را به خط قرمز بالای صفحه برساند و شکارچی باید او را <strong>شکار کند</strong>!',
       h2t: 'چگونه شکارچی برنده می‌شود؟', h2d: 'شکارچی با دو روش می‌تواند برنده شود: <strong>۱. شکار مستقیم:</strong> رفتن روی خانه‌ای که بازمانده در آن قرار دارد. <strong>۲. محاصره تدریجی:</strong> هر بار که شکارچی در یک خانه مجاور بازمانده قرار بگیرد، یک نشانگر قرمز زیر پای بازمانده روشن می‌شود. اگر این اتفاق <strong>۷ بار</strong> بیفتد، بازمانده گیر افتاده است!',
       h3t: 'چگونه بازمانده برنده می‌شود؟', h3d: 'بازمانده <strong>فقط یک راه</strong> برای پیروزی دارد: رسیدن به خط قرمز بالای صفحه. او باید با استفاده از حرکت‌های هوشمندانه و دیوارهای اصولی، از دست شکارچی فرار کند و خودش را به خانه‌ی هدف برساند.',
-      h4t: 'نکات مهم', h4d: '<strong>⚠️ تفاوت با مودهای دیگر:</strong> در این مود، پیروزی فقط رسیدن به خط نیست. شکارچی باید استراتژی تعقیب داشته باشد و بازمانده باید با دیوارهای هوشمندانه او را عقب نگه دارد.<br><strong>🚨 نشانگرهای هشدار:</strong> هر وقت نشانگرهای قرمز زیر پای بازمانده شروع به روشن شدن کنند، یعنی شکارچی در حال نزدیک شدن است و بازمانده باید هرچه سریع‌تر راه فرار را پیدا کند!'
+      h4t: 'نکات مهم', h4d: '<strong>تفاوت با مودهای دیگر:</strong> در این مود، پیروزی فقط رسیدن به خط نیست. شکارچی باید استراتژی تعقیب داشته باشد و بازمانده باید با دیوارهای هوشمندانه او را عقب نگه دارد.<br><strong>نشانگرهای هشدار:</strong> هر وقت نشانگرهای قرمز زیر پای بازمانده شروع به روشن شدن کنند، یعنی شکارچی در حال نزدیک شدن است و بازمانده باید هرچه سریع‌تر راه فرار را پیدا کند!'
     }
   },
   en: {
@@ -144,7 +148,7 @@ const T = {
     back: 'Back',
     btns: {
       regular: { title: 'Route 9 Mode', desc: 'Classic 2P & 4P Race' },
-      hunter: { title: 'Hunter & Survivor', desc: 'Hunter vs Survivor' }
+      hunter: { title: 'Wolf VS Sheep', desc: 'Hunter vs Survivor' }
     },
     regular: {
       s1t: 'Objective', s1d: 'In 2P or 4P mode, the goal is simple: <strong>Bring your piece to the opposite side of the board</strong>. The first one to cross the finish line wins.',
@@ -157,7 +161,7 @@ const T = {
       h1t: 'Different Roles', h1d: 'In this mode, players have different roles. One is the <span class="tag-red">Hunter (Red)</span> and the other is the <span class="tag-blue">Survivor (Blue)</span>. The Survivor must reach the red line at the top, and the Hunter must <strong>catch them</strong>!',
       h2t: 'How does the Hunter win?', h2d: 'The Hunter can win in two ways: <strong>1. Direct Catch:</strong> Moving onto the square occupied by the Survivor. <strong>2. Gradual Cornering:</strong> Each time the Hunter is adjacent to the Survivor, a red indicator lights up below the Survivor. If this happens <strong>7 times</strong>, the Survivor is trapped!',
       h3t: 'How does the Survivor win?', h3d: 'The Survivor has <strong>only one way</strong> to win: reaching the red line at the top. They must use clever moves and strategic walls to escape the Hunter and reach their target cell.',
-      h4t: 'Important Tips', h4d: '<strong>⚠️ Difference from other modes:</strong> Here, winning isn\'t just about crossing the line. The Hunter needs a pursuit strategy, and the Survivor must use smart walls to keep the Hunter at bay.<br><strong>🚨 Warning Indicators:</strong> Whenever the red dots under the Survivor start lighting up, it means the Hunter is closing in, and the Survivor must find a way out quickly!'
+      h4t: 'Important Tips', h4d: '<strong>Difference from other modes:</strong> Here, winning isn\'t just about crossing the line. The Hunter needs a pursuit strategy, and the Survivor must use smart walls to keep the Hunter at bay.<br><strong>Warning Indicators:</strong> Whenever the red dots under the Survivor start lighting up, it means the Hunter is closing in, and the Survivor must find a way out quickly!'
     }
   }
 };
