@@ -11,6 +11,7 @@
 
     <style>
         :root {
+            --header-h: 62px;
             --bg-color: #0c1015;
             --card-bg: #151a22;
             --border-color: #252e39;
@@ -36,7 +37,7 @@
             display: flex;
             justify-content: center;
             margin: 0;
-            padding: 66px 20px 20px;
+            padding: calc(var(--header-h) + 14px) 20px 20px;
             min-height: 100vh;
             user-select: none
         }
@@ -51,8 +52,11 @@
             display: flex
         }
         #start-overlay {
-            position: fixed;
-            inset: 0;
+            position: absolute;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgb(5 8 12 / .94);
             display: flex;
             align-items: center;
@@ -745,13 +749,19 @@
         }
         #top-controls {
             position: fixed;
-            top: 14px;
-            right: 14px;
-            z-index: 250;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             justify-content: flex-end;
+            align-items: center;
+            padding: 12px 14px;
+            background: #000;
+            box-shadow: none;
+            border: none;
             direction: ltr
         }
         .top-ctrl-btn {
@@ -803,7 +813,10 @@
         }
         #about-overlay {
             position: fixed;
-            inset: 0;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgb(5 8 12 / .85);
             display: none;
             align-items: center;
@@ -876,7 +889,10 @@
         }
         #game-over-overlay {
             position: fixed;
-            inset: 0;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgb(5 8 12 / .9);
             display: none;
             align-items: center;
@@ -1027,7 +1043,7 @@
         }
         #toast-container {
             position: fixed;
-            top: 75px;
+            top: calc(var(--header-h) + 13px);
             left: 50%;
             transform: translateX(-50%);
             z-index: 400;
@@ -1355,6 +1371,87 @@
             .wall-gauge-label {
                 font-size: 10px;
                 min-width: 16px
+            }
+        }
+        /* ===== 4P mobile team-grouped layout ===== */
+        .topbar-4p-mobile {
+            display: none;
+        }
+        @media (max-width:700px) {
+            .topbar.mode-4p.desktop-4p {
+                display: none
+            }
+            .topbar-4p-mobile {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                gap: 6px;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 12px 14px
+            }
+            .topbar-4p-mobile .team-col {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                min-width: 0
+            }
+            .topbar-4p-mobile .team-col:first-child {
+                align-items: flex-start
+            }
+            .topbar-4p-mobile .team-col:last-child {
+                align-items: flex-end
+            }
+            .topbar-4p-mobile .player-card {
+                min-width: 0;
+                width: 100%;
+                padding: 4px 2px
+            }
+            .topbar-4p-mobile .team-col:last-child .player-card {
+                flex-direction: row-reverse
+            }
+            .topbar-4p-mobile .team-col:last-child .player-info {
+                direction: rtl;
+                text-align: right
+            }
+            .topbar-4p-mobile .team-col:last-child .wall-gauge {
+                flex-direction: row-reverse
+            }
+            .topbar-4p-mobile .team-col:first-child .wall-gauge-label,
+            .topbar-4p-mobile .team-col:last-child .wall-gauge-label {
+                justify-content: flex-start
+            }
+            .topbar-4p-mobile .avatar {
+                width: 26px;
+                height: 26px
+            }
+            .topbar-4p-mobile .player-info .name {
+                font-size: 13px;
+                max-width: 90px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap
+            }
+            .topbar-4p-mobile .player-info .team-label {
+                font-size: 8.5px
+            }
+            .topbar-4p-mobile .wall-gauge-pips {
+                width: 60px;
+                height: 6px
+            }
+            .topbar-4p-mobile .wall-gauge-label {
+                font-size: 11px;
+                min-width: 22px
+            }
+        }
+        @media (max-width:400px) {
+            .topbar-4p-mobile .player-info .name {
+                font-size: 11.5px;
+                max-width: 66px
+            }
+            .topbar-4p-mobile .wall-gauge-pips {
+                width: 46px
             }
         }
     </style>
@@ -1865,7 +1962,7 @@
                     mode2pDesc: '1v1 — each player has 10 walls, first to reach the opposite side wins',
                     mode4pTitle: '4 Player (2v2 Teams)',
                     mode4pDesc: 'Two teams of two — each player has 10 walls, get both teammates to the finish',
-                    modeHunterTitle: 'Hunter & Survivor',
+                    modeHunterTitle: 'Wolf VS Sheep',
                     modeHunterDesc: '1v1 — one player must escape to the far side while the other hunts them down before they arrive',
                     move: 'Move',
                     horizontal: 'Horizontal',
@@ -1897,8 +1994,8 @@
                     objective2p: 'Reach the opposite side before your opponent.',
                     objective4p: 'Get both teammates to their target edge before the other team.',
                     objectiveHunter: '• Survivor must reach the opposite side.\n• Hunter must catch the survivor by moving onto their square, or corner them 7 times.',
-                    teamA: 'Team A (Red/Blue)',
-                    teamB: 'Team B (Green/Yellow)',
+                    teamA: 'Team A',
+                    teamB: 'Team B',
                     players: {
                         player1: 'Player 1 (Red)',
                         player2: 'Player 2 (Blue)',
@@ -1957,7 +2054,7 @@
                     mode2pDesc: 'یک به یک — هرکس ۱۰ دیوار دارد، اول کسی که به خط مقابل برسد برنده است',
                     mode4pTitle: 'چهار نفره (دو تیم دونفره)',
                     mode4pDesc: 'دو تیم دونفره — هر بازیکن ۱۰ دیوار دارد، هر تیم باید هر دو یارش را به انتها برساند',
-                    modeHunterTitle: 'گرگ و میش',
+                    modeHunterTitle: 'گرگ مقابل میش',
                     modeHunterDesc: 'یک به یک — یک نفر باید خود را به سمت مقابل برساند و نفر دیگر باید قبل از رسیدنش او را شکار کند',
                     move: 'حرکت',
                     horizontal: 'افقی',
@@ -1989,8 +2086,8 @@
                     objective2p: 'زودتر از حریف به سمت مقابل برسید.',
                     objective4p: 'هر دو هم‌تیمی باید زودتر از تیم مقابل به لبه‌ی هدف خود برسند.',
                     objectiveHunter: '• بازمانده باید به سمت مقابل برسد\n• شکارچی باید با رفتن به خانه بازمانده زودتر اورا شکار کند یا ۷ بار به میش نزدیک شود',
-                    teamA: 'تیم A (قرمز/آبی)',
-                    teamB: 'تیم B (سبز/زرد)',
+                    teamA: 'تیم الف',
+                    teamB: 'تیم ب',
                     players: {
                         player1: 'بازیکن ۱ (قرمز)',
                         player2: 'بازیکن ۲ (آبی)',
@@ -2477,6 +2574,11 @@
                 return translations[currentLang].teamNames[team]
             }
 
+            function teamPlayerNames(team) {
+                const sep = currentLang === 'fa' ? ' و ' : ' & ';
+                return players.filter(p => p.team === team).map(playerDisplayName).join(sep)
+            }
+
             function currentPlayer() {
                 return players[turn]
             }
@@ -2619,45 +2721,82 @@
                     const vsBox = document.createElement('div');
                     vsBox.className = 'bet-box';
                     vsBox.innerHTML = `<div class="label">${t('match')}</div><div class="amount">${t('vs')}</div>`;
-                    topbarEl.append(card0, vsBox, card1)
+                    topbarEl.append(card0, vsBox, card1);
+                    const mobileTopbar = document.getElementById('topbar-4p-mobile');
+                    if (mobileTopbar) mobileTopbar.remove()
                 } else {
-                    topbarEl.className = 'topbar mode-4p';
+                    topbarEl.className = 'topbar mode-4p desktop-4p';
                     for (const p of players) {
                         topbarEl.appendChild(createPlayerCard(p))
                     }
+                    renderMobileTeamTopbar()
                 }
             }
 
-            function createWallGauge(p, alignRight) {
+            function renderMobileTeamTopbar() {
+                let mobileTopbar = document.getElementById('topbar-4p-mobile');
+                if (mobileTopbar) mobileTopbar.remove();
+                mobileTopbar = document.createElement('div');
+                mobileTopbar.className = 'topbar-4p-mobile';
+                mobileTopbar.id = 'topbar-4p-mobile';
+                const teamAPlayers = players.filter(p => p.team === 0);
+                const teamBPlayers = players.filter(p => p.team === 1);
+                const colA = document.createElement('div');
+                colA.className = 'team-col';
+                teamAPlayers.forEach(p => colA.appendChild(createPlayerCard(p, !0)));
+                const vsBox = document.createElement('div');
+                vsBox.className = 'bet-box';
+                vsBox.innerHTML = `<div class="label">${t('match')}</div><div class="amount">${t('vs')}</div>`;
+                const colB = document.createElement('div');
+                colB.className = 'team-col';
+                teamBPlayers.forEach(p => colB.appendChild(createPlayerCard(p, !0)));
+                mobileTopbar.append(colA, vsBox, colB);
+                topbarEl.insertAdjacentElement('afterend', mobileTopbar)
+            }
+
+            function createWallGauge(p, alignRight, mobileTeamRight) {
                 const wrap = document.createElement('div');
                 wrap.className = 'wall-gauge' + (alignRight ? ' align-right' : '');
-                wrap.id = `p${p.id}-gauge`;
+                wrap.dataset.playerId = p.id;
                 const pipRow = document.createElement('div');
                 pipRow.className = 'wall-gauge-pips';
                 const maxWalls = p.maxWalls || 10;
                 for (let i = 0; i < maxWalls; i++) {
                     const pip = document.createElement('span');
                     pip.className = 'wall-pip';
+                    if (i < p.walls) {
+                        pip.classList.add('filled');
+                        pip.style.background = p.color;
+                        pip.style.color = p.color
+                    }
                     pipRow.appendChild(pip)
                 }
                 const label = document.createElement('div');
                 label.className = 'wall-gauge-label';
                 const numSpan = document.createElement('span');
-                numSpan.id = `p${p.id}-walls`;
-                numSpan.textContent = p.walls;
+                numSpan.className = 'wall-gauge-num';
+                numSpan.dataset.playerId = p.id;
+                numSpan.textContent = localizeNum(p.walls);
                 const iconSpan = document.createElement('span');
                 iconSpan.className = 'wall-gauge-icon';
                 iconSpan.innerHTML = '<svg class="icon-svg sm" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="4" y1="12" x2="20" y2="12"/></svg>';
-                label.append(iconSpan, numSpan);
-                wrap.append(label, pipRow);
+                if (mobileTeamRight) {
+                    wrap.style.direction = 'ltr';
+                    wrap.style.flexDirection = 'row';
+                    label.append(numSpan, iconSpan);
+                    wrap.append(pipRow, label);
+                } else {
+                    label.append(iconSpan, numSpan);
+                    wrap.append(label, pipRow);
+                }
                 return wrap
             }
 
-            function createPlayerCard(p) {
+            function createPlayerCard(p, forMobileTeamLayout) {
                 const card = document.createElement('div');
                 card.className = `player-card ${p.colorClass}`;
-                card.id = `p${p.id}-card`;
-                const isRightSide = (gameMode === '2p' || gameMode === 'hunter') && p.id === 1;
+                card.dataset.playerId = p.id;
+                const isRightSide = (!forMobileTeamLayout && (gameMode === '2p' || gameMode === 'hunter') && p.id === 1) || (forMobileTeamLayout && p.team === 1);
                 const avatar = document.createElement('div');
                 avatar.className = 'avatar';
                 avatar.style.background = p.color;
@@ -2689,7 +2828,7 @@
                     if (p.role === 'escaper') {
                         const proxDiv = document.createElement('div');
                         proxDiv.className = 'hunt-proximity';
-                        proxDiv.id = 'hunt-proximity-badge';
+                        proxDiv.dataset.huntProximity = '1';
                         for (let i = 0; i < HUNT_PROXIMITY_MAX; i++) {
                             const dot = document.createElement('span');
                             dot.className = 'hunt-dot';
@@ -2698,7 +2837,7 @@
                         info.appendChild(proxDiv)
                     }
                 }
-                info.appendChild(createWallGauge(p, isRightSide));
+                info.appendChild(createWallGauge(p, isRightSide, forMobileTeamLayout && isRightSide));
                 card.append(avatar, info);
                 return card
             }
@@ -3404,10 +3543,10 @@
             }
 
             function updateProximityUI() {
-                const badge = document.getElementById('hunt-proximity-badge');
-                if (!badge) return;
-                const dots = badge.querySelectorAll('.hunt-dot');
-                dots.forEach((d, i) => d.classList.toggle('filled', i < huntProximity))
+                document.querySelectorAll('.hunt-proximity').forEach(badge => {
+                    const dots = badge.querySelectorAll('.hunt-dot');
+                    dots.forEach((d, i) => d.classList.toggle('filled', i < huntProximity))
+                })
             }
 
             function wallBetween(r1, c1, r2, c2) {
@@ -3458,8 +3597,8 @@
                 let winnerLabel, loserLabel, winnerColorClass, winnerColor;
                 if (winnerTeam !== undefined && winnerTeam !== null) {
                     const loserTeam = winnerTeam === 0 ? 1 : 0;
-                    winnerLabel = teamName(winnerTeam);
-                    loserLabel = teamName(loserTeam);
+                    winnerLabel = teamPlayerNames(winnerTeam);
+                    loserLabel = teamPlayerNames(loserTeam);
                     const wp = players.find(p => p.team === winnerTeam);
                     winnerColorClass = wp.colorClass;
                     winnerColor = wp.color
@@ -3495,7 +3634,10 @@
                 appEl.classList.remove('visible');
                 setThemeColor('#000000');
                 const topCtrls = document.getElementById('top-controls');
-                if (topCtrls) topCtrls.style.display = 'flex'
+                if (topCtrls) topCtrls.style.display = 'flex';
+                const mobileTopbar = document.getElementById('topbar-4p-mobile');
+                if (mobileTopbar) mobileTopbar.remove();
+                window.scrollTo(0, 0)
             }
             btnGoRepeat.onclick = restartSameGame;
             btnGoHome.onclick = goHome;
@@ -3514,10 +3656,10 @@
 
             function updateActivePlayerUI() {
                 for (const p of players) {
-                    const card = document.getElementById(`p${p.id}-card`);
-                    if (!card) continue;
-                    card.classList.toggle('active', p.id === turn && !gameOver);
-                    card.classList.toggle('finished', p.finished)
+                    document.querySelectorAll(`.player-card[data-player-id="${p.id}"]`).forEach(card => {
+                        card.classList.toggle('active', p.id === turn && !gameOver);
+                        card.classList.toggle('finished', p.finished)
+                    })
                 }
                 const player = currentPlayer();
                 if (player) {
@@ -3531,17 +3673,18 @@
 
             function updateScores() {
                 for (const p of players) {
-                    const wallsSpan = document.getElementById(`p${p.id}-walls`);
-                    const gauge = document.getElementById(`p${p.id}-gauge`);
-                    if (wallsSpan) wallsSpan.textContent = localizeNum(p.walls);
-                    if (gauge) {
+                    document.querySelectorAll(`.wall-gauge-num[data-player-id="${p.id}"]`).forEach(el => {
+                        el.textContent = localizeNum(p.walls)
+                    });
+                    document.querySelectorAll(`.wall-gauge[data-player-id="${p.id}"]`).forEach(gauge => {
                         const pips = gauge.querySelectorAll('.wall-pip');
                         pips.forEach((pip, i) => {
-                            pip.classList.toggle('filled', i < p.walls);
-                            pip.style.background = i < p.walls ? p.color : '';
+                            const filled = i < p.walls;
+                            pip.classList.toggle('filled', filled);
+                            pip.style.background = filled ? p.color : '';
                             pip.style.color = p.color
                         })
-                    }
+                    })
                 }
                 const player = currentPlayer();
                 if (player) infoWalls.textContent = `${localizeNum(player.walls)} / ${localizeNum(player.maxWalls || 10)}`
@@ -3796,7 +3939,24 @@
                 if (pendingWallPos && !isAnimating) draw();
                 requestAnimationFrame(animateLoop)
             }
-            animateLoop()
+            animateLoop();
+
+            // ========== هدر ثابت: همیشه ارتفاع واقعی آن را اندازه می‌گیریم تا محتوای وسط هرگز زیرش نرود ==========
+            const topControls = document.getElementById('top-controls');
+            if (topControls) {
+                const syncHeaderHeight = () => {
+                    document.documentElement.style.setProperty('--header-h', topControls.offsetHeight + 'px');
+                };
+                syncHeaderHeight();
+                window.addEventListener('resize', syncHeaderHeight);
+                window.addEventListener('orientationchange', syncHeaderHeight);
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', syncHeaderHeight);
+                }
+                if (window.ResizeObserver) {
+                    new ResizeObserver(syncHeaderHeight).observe(topControls);
+                }
+            }
         })()
     </script>
 </body>
