@@ -10,7 +10,52 @@
 
             function getSocket() {
                 if (!socket) {
-                    socket = io(GAME_SERVER_URL);
+                    socket = io(GAME_SERVER_URL, {
+                        // Socket.io's default is to connect over HTTP long-
+                        // polling first and only upgrade to a WebSocket a
+                        // moment later — that extra request/response round
+                        // trip adds real, noticeable delay to the very
+                        // first connect AND to every automatic reconnect
+                        // after a network blip. Listing 'websocket' first
+                        // makes it attempt the fast path immediately; it
+                        // still automatically falls back to polling for any
+                        // network that blocks WebSocket outright, so nothing
+                        // about connectivity changes — only how quickly a
+                        // normal connection gets there.
+                        transports: ['websocket', 'polling']
+                    });
+                    // ===== Silent reconnect ==========================
+                    // A brief WiFi/mobile drop mid-match closes the
+                    // underlying connection; Socket.io's own auto-reconnect
+                    // brings the transport back, but the SERVER treats that
+                    // as a brand-new, roomless connection (fresh socket.data)
+                    // — it has no idea which room/slot this player was in.
+                    // Previously nothing here re-joined on the player's
+                    // behalf, so a few seconds of bad signal silently broke
+                    // move/wall delivery in both directions until the player
+                    // manually reloaded and went through the resume dialog.
+                    // Now: the moment the transport comes back, if we were
+                    // in a room, immediately reclaim the same slot with the
+                    // token we already hold — same mechanism as a manual
+                    // resume, just automatic and without ever leaving the
+                    // game screen.
+                    let hasConnectedBefore = false;
+                    socket.on('connect', () => {
+                        if (!hasConnectedBefore) { hasConnectedBefore = true; return }
+                        const code = window.FBRoom._roomCode;
+                        const token = window.FBRoom._token;
+                        if (!code || !token) return; // not mid-match — nothing to reclaim
+                        emitAck('joinRoom', { code, maxPlayers: window.FBRoom._maxPlayers, token })
+                            .then((res) => {
+                                if (!res || !res.ok) return; // room gone / token stale — leave it to the normal resume flow
+                                window.FBRoom._mySlotId = res.slot;
+                                window.FBRoom._token = res.token || token;
+                                window.FBRoom._joinedAt = (typeof res.t === 'number') ? res.t : Date.now();
+                                window.FBRoom._roomMode = res.mode || window.FBRoom._roomMode;
+                                window.FBRoom._reconnectListeners.forEach(cb => { try { cb() } catch (e) {} })
+                            })
+                            .catch(() => {})
+                    })
                 }
                 return socket
             }
@@ -28,8 +73,10 @@
                 _roomCode: null,
                 _mySlotId: null,
                 _token: null,
+                _maxPlayers: null,
                 _msgListeners: [],
                 _presenceListeners: [],
+                _reconnectListeners: [],
                 _joinedAt: 0,
                 // حالت واقعی اتاق (2p/4p/hunter) همونیه که سرور موقع
                 // createRoom/joinRoom برمی‌گردونه — این تنها منبع معتبرشه.
@@ -61,6 +108,10 @@
                     const res = await emitAck('joinRoom', { code, maxPlayers, token: token || null });
                     if (!res || !res.ok) return null;
                     window.FBRoom._roomCode = code;
+                    // Stashed so a silent post-drop reconnect (see
+                    // getSocket() above) can re-join with the exact same
+                    // parameters without the app having to remember them.
+                    window.FBRoom._maxPlayers = maxPlayers;
                     window.FBRoom._mySlotId = res.slot;
                     window.FBRoom._token = res.token || null;
                     // BUGFIX: this used to be the CLIENT's own Date.now(),
@@ -126,6 +177,15 @@
                     return unsub
                 },
 
+                // Registers a callback fired after a SILENT reconnect (a
+                // transient drop, not a page reload) successfully reclaims
+                // our slot — see the 'connect' handler in getSocket(). Lets
+                // the game trigger its existing live-resync machinery right
+                // away instead of waiting on the next presence broadcast.
+                onReconnected(callback) {
+                    window.FBRoom._reconnectListeners.push(callback)
+                },
+
                 onPresence(maxPlayers, callback) {
                     const handler = (playersObj) => callback(playersObj || {});
                     getSocket().on('presence', handler);
@@ -148,6 +208,7 @@
                     window.FBRoom._roomCode = null;
                     window.FBRoom._mySlotId = null;
                     window.FBRoom._token = null;
+                    window.FBRoom._maxPlayers = null;
                     window.FBRoom._roomMode = null
                 }
             };

@@ -82,7 +82,20 @@ const io = new Server(server, {
   // legitimate payload (a full board-state snapshot), but far below
   // Socket.io's 1MB default — trims how much bandwidth/memory a malicious
   // client can burn per message before payloadSizeOk() below even runs.
-  maxHttpBufferSize: 512 * 1024
+  maxHttpBufferSize: 512 * 1024,
+  // Socket.io's defaults (pingInterval 25s / pingTimeout 20s) exist to
+  // tolerate very rocky connections, but they mean a connection that dies
+  // WITHOUT a clean close packet (phone loses signal, laptop sleeps, a
+  // tunnel/elevator, etc. — as opposed to a tab being closed, which closes
+  // cleanly and is detected instantly) can take up to ~45 seconds for the
+  // server to even notice. Until it does, presence still shows that player
+  // as "connected", so the opponent's 30s grace-period overlay never even
+  // starts — the match just looks frozen. Tightened here so a real silent
+  // drop is caught in well under 15s while still leaving comfortable room
+  // for normal mobile-network / VPN latency (relevant for this game's
+  // Iran-based audience) without producing false disconnects.
+  pingInterval: 10000,
+  pingTimeout: 8000
 });
 
 const PORT = process.env.PORT || 3000;

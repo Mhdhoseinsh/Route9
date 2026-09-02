@@ -1007,6 +1007,15 @@
                 }, 9000)
             }
 
+            // A brief connectivity drop now reclaims our room slot on its own
+            // (see the silent-reconnect handler in room.js) without ever
+            // showing the resume dialog — but any moves the opponent made
+            // while we were briefly gone still need to be caught up on, so
+            // treat it exactly like any other detected desync and pull a
+            // fresh snapshot. No-ops harmlessly if we weren't mid-match
+            // (requestLiveResync already guards on onlineState.active).
+            window.FBRoom.onReconnected(() => requestLiveResync());
+
             // Small, throttle-free helper: pushes our current full board state
             // to the server's per-room cache so a reconnecting opponent can be
             // served state even if we're the only device that was ever online
