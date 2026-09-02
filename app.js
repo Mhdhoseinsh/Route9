@@ -661,13 +661,20 @@
                 peerLeft: !1,
                 timerSeconds: 120,
                 hunterRoleByPlayerId: null,
-                // Per-room message counter (see room.js/server.js) — tracks the
-                // last `seq` we successfully applied so a gap (missed message)
-                // can be noticed and auto-corrected instead of silently
-                // desyncing the two devices forever. Reset to null whenever we
+                // Per-sender message counter (see room.js/server.js) — for
+                // each opponent slot, tracks the last `seq` we successfully
+                // applied FROM THAT SLOT so a gap (a message from them we
+                // never received) can be noticed and auto-corrected instead
+                // of silently desyncing the two devices forever. Keyed by
+                // sender slot rather than one shared room-wide counter,
+                // because our own outgoing messages are never echoed back to
+                // us — a single shared counter would "skip" every time we
+                // sent something ourselves and falsely look like a missed
+                // message from the opponent. Reset to {} whenever we
                 // (re)connect, since a fresh connection restarts its own
-                // baseline; the next inbound message re-anchors it.
-                lastSeq: null
+                // baseline; the next inbound message from each slot
+                // re-anchors that slot's baseline.
+                lastSeqBySlot: {}
             };
 
             const onlineRematch = {
@@ -844,7 +851,7 @@
                 stopTurnTimer();
                 turnTimerPlayerId = null;
                 onlineMsgQueue = [];
-                onlineState.lastSeq = null;
+                onlineState.lastSeqBySlot = {};
                 const lobbyView = document.getElementById('online-lobby-view');
                 if (lobbyView) lobbyView.style.display = 'none';
                 const revealOverlay = document.getElementById('hunter-role-reveal-overlay');
@@ -946,17 +953,25 @@
                     // processOnlineMessage() can trust it over any
                     // self-declared id inside the payload (see there).
                     data.__from = from;
-                    if (typeof seq === 'number') {
-                        if (onlineState.lastSeq != null && seq > onlineState.lastSeq + 1 && !awaitingStateSync) {
+                    if (typeof seq === 'number' && typeof from === 'number') {
+                        // Gap check is per SENDER SLOT — see the
+                        // lastSeqBySlot comment on onlineState. Comparing
+                        // against a single shared counter here (the old
+                        // behavior) meant our own outgoing messages, which
+                        // never loop back to us, made the very next message
+                        // we received from the opponent falsely look like a
+                        // gap almost every time.
+                        const lastFromThem = onlineState.lastSeqBySlot[from];
+                        if (lastFromThem != null && seq > lastFromThem + 1 && !awaitingStateSync) {
                             // We missed at least one message in between — don't
                             // apply this one on top of an unknown gap, ask for a
                             // fresh full snapshot instead of risking a silent,
                             // permanent desync between the two devices.
-                            onlineState.lastSeq = seq;
+                            onlineState.lastSeqBySlot[from] = seq;
                             requestLiveResync();
                             return
                         }
-                        onlineState.lastSeq = seq
+                        onlineState.lastSeqBySlot[from] = seq
                     }
                     handleOnlineData(data)
                 });
@@ -1306,7 +1321,7 @@
                 onlineState.active = !0;
                 onlineState.mode = mode;
                 onlineState.peerLeft = !1;
-                onlineState.lastSeq = null;
+                onlineState.lastSeqBySlot = {};
                 clearAllDisconnectCountdowns();
                 currentTurnTimerSeconds = onlineState.timerSeconds || DEFAULT_TIMER_SECONDS;
                 document.getElementById('name-entry-view').style.display = 'none';
@@ -1473,10 +1488,10 @@
                 syncTurnTimer();
                 sfxGameStart();
                 saveOnlineSession();
-                // Fresh connection/resync — the next inbound message
-                // re-anchors our seq baseline instead of being compared
-                // against a counter from before the gap.
-                onlineState.lastSeq = null;
+                // Fresh connection/resync — the next inbound message from
+                // each sender re-anchors that sender's seq baseline instead
+                // of being compared against a counter from before the gap.
+                onlineState.lastSeqBySlot = {};
                 // Re-report our just-restored state so the server's cache is
                 // warm again in case we're the one who ends up needing to
                 // answer a future 'request-state' fallback.

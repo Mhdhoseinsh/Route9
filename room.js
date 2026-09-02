@@ -63,7 +63,20 @@
                     window.FBRoom._roomCode = code;
                     window.FBRoom._mySlotId = res.slot;
                     window.FBRoom._token = res.token || null;
-                    window.FBRoom._joinedAt = Date.now();
+                    // BUGFIX: this used to be the CLIENT's own Date.now(),
+                    // but onMessage() below compares it against `msg.t`,
+                    // which is the SERVER's Date.now() when it relayed the
+                    // message. Mixing a client clock with a server clock
+                    // here meant any real clock drift between the two (a
+                    // phone with a slightly-off clock is common) could make
+                    // every message from the moment you joined onward look
+                    // "too old" and get silently dropped forever — with no
+                    // visible error, just moves that never arrive. The
+                    // server now returns its own current time (`t`) in the
+                    // join ack, so this baseline and `msg.t` are always on
+                    // the same clock. Fall back to the client clock only if
+                    // an older server build didn't send `t`.
+                    window.FBRoom._joinedAt = (typeof res.t === 'number') ? res.t : Date.now();
                     window.FBRoom._roomMode = res.mode || null;
                     return res.slot
                 },

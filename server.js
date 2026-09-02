@@ -13,9 +13,14 @@
 //     side now trusts this over any self-declared "playerId" in a payload,
 //     which closes the "forge a message as a different player" class of
 //     bug (e.g. forcing a stranger's forfeit in 4-player mode).
-//   - messages are numbered per room (`seq`) so a client that notices a gap
-//     can ask for a fresh snapshot instead of silently drifting out of sync
-//     forever.
+//   - messages are numbered per SENDER SLOT (`seq`) so a client that
+//     notices a gap in a particular opponent's numbering can ask for a
+//     fresh snapshot instead of silently drifting out of sync forever.
+//     (Originally this was a single room-wide counter; that meant a
+//     client's OWN outgoing messages — never echoed back to itself —
+//     silently consumed numbers too, so the very next message it actually
+//     received from the opponent almost always looked like a gap. Fixed by
+//     numbering per-sender instead.)
 //   - `mode` is validated against a fixed whitelist and `maxPlayers` is
 //     always DERIVED from that validated mode on the server — never taken
 //     as-is from whatever number a client sends. (Previously a client-
@@ -84,7 +89,7 @@ const PORT = process.env.PORT || 3000;
 
 // ---- In-memory room store -------------------------------------------------
 // rooms: Map<code, {
-//   maxPlayers, mode, createdAt, lastActivity, seq,
+//   maxPlayers, mode, createdAt, lastActivity, seqBySlot: { [slot]: number },
 //   players: { [slot]: { token, joinedAt, connected, leftAt } },
 //   lastCheckpoint: { state, bySlot, t } | null
 // }>
@@ -246,7 +251,10 @@ io.on('connection', (socket) => {
       mode: safeMode,
       createdAt: Date.now(),
       lastActivity: Date.now(),
-      seq: 0,
+      // Per-sender-slot message counters — see the seqBySlot comment in the
+      // 'roomMessage' handler for why this replaced a single room-wide
+      // counter.
+      seqBySlot: {},
       players: {},
       lastCheckpoint: null
     });
@@ -270,7 +278,7 @@ io.on('connection', (socket) => {
     // دکمه‌ی اتصال)، همون اسلات قبلی رو برگردون؛ یک اسلات دوم مصرف نکن.
     if (socket.data.roomCode === code && socket.data.slot !== null && socket.data.slot !== undefined) {
       const mine = room.players[socket.data.slot];
-      if (mine && mine.connected) { if (ack) ack({ ok: true, slot: socket.data.slot, mode: room.mode, token: mine.token }); return; }
+      if (mine && mine.connected) { if (ack) ack({ ok: true, slot: socket.data.slot, mode: room.mode, token: mine.token, t: Date.now() }); return; }
     }
 
     // limit همیشه از room.maxPlayers میاد که خودش موقع createRoom از یک
@@ -295,7 +303,7 @@ io.on('connection', (socket) => {
           existing.connected = true;
           existing.leftAt = null;
           assignSocketToSlot(socket, code, i);
-          if (ack) ack({ ok: true, slot: i, mode: room.mode, token });
+          if (ack) ack({ ok: true, slot: i, mode: room.mode, token, t: Date.now() });
           broadcastPresence(code);
           return;
         }
@@ -316,7 +324,7 @@ io.on('connection', (socket) => {
     const newToken = crypto.randomBytes(16).toString('hex');
     room.players[slot] = { token: newToken, joinedAt: Date.now(), connected: true, leftAt: null };
     assignSocketToSlot(socket, code, slot);
-    if (ack) ack({ ok: true, slot, mode: room.mode, token: newToken });
+    if (ack) ack({ ok: true, slot, mode: room.mode, token: newToken, t: Date.now() });
     broadcastPresence(code);
   });
 
@@ -335,7 +343,25 @@ io.on('connection', (socket) => {
     if (!payloadSizeOk(payload)) return;
     const room = rooms.get(code);
     touch(room);
-    room.seq = (room.seq || 0) + 1;
+    // BUGFIX: seq used to be a single room-wide counter shared by every
+    // sender. A client's own outgoing messages bump that counter too, but
+    // (by design, see socket.to() below) never get relayed back to that
+    // same client — so from any one client's point of view, the very next
+    // message it actually RECEIVES from the opponent always looks like it
+    // "skipped" however many numbers the client itself just consumed by
+    // sending. The client-side gap check in app.js treats any such skip as
+    // evidence of a dropped message and fires an automatic resync — so in
+    // practice this fired on nearly every real exchange (each side sending
+    // its own move/profile/timer message was enough to trip it on the
+    // other), producing exactly the "reconnecting the board" / "couldn't
+    // resync" loop and moves silently failing to apply.
+    // Fix: number messages PER SENDER SLOT instead of per room. A client
+    // then only compares incoming seq numbers against the last one it saw
+    // FROM THAT SAME SLOT — a count that's only ever advanced by messages
+    // it actually received, never polluted by its own sends.
+    room.seqBySlot = room.seqBySlot || {};
+    room.seqBySlot[slot] = (room.seqBySlot[slot] || 0) + 1;
+    const mySeq = room.seqBySlot[slot];
 
     // اگه این پیام یه درخواستِ «request-state» موقعِ reconnect باشه و در
     // حال حاضر هیچ بازیکنِ دیگه‌ای توی روم آنلاین نباشه که جوابش رو بده،
@@ -353,7 +379,7 @@ io.on('connection', (socket) => {
     socket.to('room:' + code).emit('roomMessage', {
       from: slot,
       t: Date.now(),
-      seq: room.seq,
+      seq: mySeq,
       payload
     });
   });
