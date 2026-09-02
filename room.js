@@ -4,7 +4,7 @@
             // این مقدار را با آدرس واقعی سرورت جایگزین کن. همین رشته دقیقاً توی
             // متای CSP بالای فایل هم هست — هر دو جا را با هم عوض کن.
             // مثال: "https://route9-server.onrender.com"
-            const GAME_SERVER_URL = "https://barricade.onrender.com";
+            const GAME_SERVER_URL = "https://route9.onrender.com";
 
             let socket = null;
 
