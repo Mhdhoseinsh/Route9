@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: route9-game-server
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      # اختیاری. اگر پر شود، فقط همین آدرس(ها) اجازه‌ی اتصال Socket.io به
+      # این سرور را دارند (چند مقدار را با کاما جدا کنید). اگر خالی
+      # بماند، سرور دقیقاً مثل قبل از هر آدرسی اتصال را می‌پذیرد — یعنی
+      # خالی‌گذاشتنش هیچ چیزی را خراب نمی‌کند. مقدار را در داشبورد Render
+      # زیر Environment وارد کنید، مثلاً:
+      #   https://your-username.github.io
+      - key: ALLOWED_ORIGINS
+        sync: false

@@ -1,11 +1,821 @@
-<!--
-  Route 9
-  Copyright (c) 2026 محمدحسین شمسی. All rights reserved.
-  This source code is proprietary. No part of this file may be copied,
-  modified, or redistributed without prior written permission from the owner.
--->
-<!DOCTYPE html><html lang="en" dir="ltr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="mobile-web-app-capable" content="yes"><meta name="referrer" content="strict-origin-when-cross-origin"><meta name="description" content="Route 9 — an offline pass-and-play strategy board game. Block your rivals with walls and race to the finish, solo, 1v1, 2v2 team battles, or Wolf vs Sheep mode."><link rel="icon" type="image/png" sizes="512x512" href="icon.png"><link rel="apple-touch-icon" href="icon-180.png"><title id="page-title">Route 9 - Dark Mode</title><link rel="stylesheet" href="styles.css">
-<script>
-            !function(e,t,n){e.yektanetAnalyticsObject=n,e[n]=e[n]||function(){e[n].q.push(arguments)},e[n].q=e[n].q||[];var a=t.getElementsByTagName("head")[0],r=new Date,c="https://cdn.yektanet.com/superscript/x6fV5xRI/native-mhdhoseinsh.github.io-47969/yn_pub.js?v="+r.getFullYear().toString()+"0"+r.getMonth()+"0"+r.getDate()+"0"+r.getHours(),s=t.createElement("link");s.rel="preload",s.as="script",s.href=c,a.appendChild(s);var l=t.createElement("script");l.async=!0,l.src=c,a.appendChild(l)}(window,document,"yektanet");
-        </script>
-</head><body><div id="top-controls"><a href="help.html" class="top-ctrl-btn" id="btn-help"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg><span id="lbl-help">How to Play</span></a><button class="top-ctrl-btn" id="btn-about"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.6" r="0.9" fill="currentColor" stroke="none"/></svg><span id="about-btn-label">About</span></button><button class="top-ctrl-btn" id="btn-settings"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span id="settings-btn-label">Settings</span></button></div><div id="about-overlay"><div class="about-card"><button class="about-close-x" id="btn-about-close-x" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button><div class="about-hero"><h2 id="about-title">About Us</h2><p class="about-tagline" id="about-tagline">Strategy. Walls. Victory.</p></div><p id="about-text">Route 9 is an offline, pass-and-play strategy board game inspired by classic wall-blocking puzzle games.</p><div class="about-features"><div class="about-feature-chip"><span class="about-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg></span><span id="about-feature1">Offline play</span></div><div class="about-feature-chip"><span class="about-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="18" cy="9" r="2.4"/><path d="M15.7 20a5 5 0 0 1 6.8-3.7"/></svg></span><span id="about-feature2">2–4 players</span></div><div class="about-feature-chip"><span class="about-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span id="about-feature3">Wall strategy</span></div></div><div class="about-divider"></div><div class="creator-box"><span class="creator-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><div class="creator-info"><div class="label" id="about-creator-label">Created by</div><div class="creator-name" id="about-creator-name">Mohammad hossein shamsi</div></div></div><div class="about-follow"><span class="about-follow-label" id="about-follow-label">Follow us</span><div class="about-social-links"><a href="https://instagram.com/shevchenkontop" target="_blank" rel="noopener noreferrer" class="about-social-btn about-social-insta" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://t.me/boost/Route9_gg" target="_blank" rel="noopener noreferrer" class="about-social-btn about-social-telegram" aria-label="Telegram"><svg viewBox="26 48 164 144" fill="currentColor" stroke="none"><path d="M164.5 62.3 40.6 110.4c-8.5 3.4-8.4 8.1-1.5 10.2l31.8 9.9 73.8-46.5c3.5-2.1 6.7-1 4 1.3l-59.7 53.9h0l-2.3 33.6c3.3 0 4.8-1.5 6.6-3.3l15.9-15.4 33 24.3c6.1 3.4 10.4 1.6 11.9-5.6l21.6-101.7c2.1-8.9-3.4-12.9-9.2-9.8z"/></svg><span>Telegram</span></a></div></div></div></div><div id="settings-overlay"><div class="settings-card"><div class="settings-header"><h2 id="settings-title">Settings</h2><button class="settings-close-x" id="btn-settings-close-x" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button></div><div class="settings-row"><div class="settings-row-info"><span class="settings-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z"/></svg></span><div class="settings-row-text"><div class="settings-row-title" id="settings-lang-label">Language</div><div class="settings-row-desc" id="settings-lang-desc">Choose the app language</div></div></div><div class="lang-switch" id="lang-switch"><button type="button" class="lang-opt" id="lang-opt-fa" data-lang="fa">فا</button><button type="button" class="lang-opt" id="lang-opt-en" data-lang="en">EN</button><span class="lang-slider" id="lang-slider"></span></div></div><div class="settings-row"><div class="settings-row-info"><span class="settings-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg></span><div class="settings-row-text"><div class="settings-row-title" id="settings-sound-label">Sound Effects</div><div class="settings-row-desc" id="settings-sound-desc">Enable or mute in-game sounds</div></div></div><button type="button" class="ios-toggle no-click-sfx" id="btn-sound-settings" role="switch" aria-label="Sound"><span class="ios-toggle-knob"></span></button></div></div></div><div id="toast-container"></div><div id="lang-loading-overlay"><div class="lang-loading-spinner"></div></div><div id="start-overlay"><div class="start-card" id="mode-select-view"><h1 style="text-align:center" id="mode-title">Route 9</h1><p class="subtitle" id="start-subtitle">Offline pass-and-play — choose a mode</p><button class="mode-btn" id="btn-start-classic"><div class="mode-icon icon-classic"><img src="4p.webp" alt="Classic" class="icon-img"><span class="mode-badge" id="mode-classic-badge">2-4</span></div><div class="mode-text"><div class="t" id="mode-classic-title">Classic Race (2 or 4 Players)</div><div class="d" id="mode-classic-desc">1v1 or 2v2 teams — place walls to block the way, race to the opposite side</div></div></button><button class="mode-btn" id="btn-start-hunter"><div class="mode-icon icon-hunter"><img src="huntersurvivor.webp" alt="Hunter &amp; Survivor" class="icon-img"></div><div class="mode-text"><div class="t" id="mode-hunter-title">Hunter &amp; Escaper</div><div class="d" id="mode-hunter-desc">1v1 — one player must escape to the far side while the other hunts them down before they arrive</div></div></button></div><div class="start-card" id="name-entry-view" style="display:none"><h1 id="name-entry-title">Enter Player Names</h1><div class="player-count-toggle" id="player-count-toggle" data-active="2" style="display:none"><span class="pc-toggle-slider"></span><button class="pc-toggle-btn active" id="btn-pc-2" type="button"><span class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="7.5" r="3.2"/><path d="M2.8 20c.5-3.6 2.9-6 5.7-6s5.2 2.4 5.7 6"/><circle cx="17" cy="8.2" r="2.5" opacity=".55"/><path d="M14.9 13c2.3.3 4.1 2.3 4.5 5" opacity=".55"/></svg></span><span id="pc-2-label">2 Players</span></button><button class="pc-toggle-btn" id="btn-pc-4" type="button"><span class="pc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7.5" r="2.7"/><path d="M2.2 19.2c.4-3 2.4-5 4.8-5s4.4 2 4.8 5"/><circle cx="17" cy="7.5" r="2.7"/><path d="M12.2 19.2c.4-3 2.4-5 4.8-5s4.4 2 4.8 5"/></svg></span><span id="pc-4-label">4 Players (2v2)</span></button></div><div id="name-fields-2p" style="display:none"><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-p1" style="background:#e74c3c"></span><input type="text" id="input-name-p1" maxlength="18" placeholder="Player 1 (Red)"></div><div class="customize-row"><div class="swatch-group" id="swatches-p1"></div></div></div><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-p2" style="background:#3498db"></span><input type="text" id="input-name-p2" maxlength="18" placeholder="Player 2 (Blue)"></div><div class="customize-row"><div class="swatch-group" id="swatches-p2"></div></div></div></div><div id="name-fields-4p" style="display:none"><div class="team-group team-group-1" id="team-group-1"><div class="team-group-header"><span class="team-group-dots"><span class="team-group-dot" id="team-dot-red" style="background:#e74c3c"></span><span class="team-group-dot" id="team-dot-blue" style="background:#3498db"></span></span><span id="team-group-1-label">Team A</span></div><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-red" style="background:#e74c3c"></span><input type="text" id="input-name-red" maxlength="18" placeholder="Red"></div><div class="customize-row"><div class="swatch-group" id="swatches-red"></div></div></div><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-blue" style="background:#3498db"></span><input type="text" id="input-name-blue" maxlength="18" placeholder="Blue"></div><div class="customize-row"><div class="swatch-group" id="swatches-blue"></div></div></div></div><div class="team-vs-divider"><span id="team-vs-label">VS</span></div><div class="team-group team-group-2" id="team-group-2"><div class="team-group-header"><span class="team-group-dots"><span class="team-group-dot" id="team-dot-green" style="background:#2ecc71"></span><span class="team-group-dot" id="team-dot-yellow" style="background:#f1c40f"></span></span><span id="team-group-2-label">Team B</span></div><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-green" style="background:#2ecc71"></span><input type="text" id="input-name-green" maxlength="18" placeholder="Green"></div><div class="customize-row"><div class="swatch-group" id="swatches-green"></div></div></div><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-yellow" style="background:#f1c40f"></span><input type="text" id="input-name-yellow" maxlength="18" placeholder="Yellow"></div><div class="customize-row"><div class="swatch-group" id="swatches-yellow"></div></div></div></div></div><div id="name-fields-hunter" style="display:none"><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-hunter" style="background:#e74c3c"></span><input type="text" id="input-name-hunter" maxlength="18" placeholder="Hunter (Red)"></div><div class="customize-row"><div class="swatch-group" id="swatches-hunter"></div></div></div><div class="player-setup-card"><div class="name-input-row"><span class="avatar-preview" id="avatar-preview-escaper" style="background:#3498db"></span><input type="text" id="input-name-escaper" maxlength="18" placeholder="Escaper (Blue)"></div><div class="customize-row"><div class="swatch-group" id="swatches-escaper"></div></div></div></div><div class="name-entry-actions"><button id="btn-name-back">Back</button><button id="btn-name-confirm">Start Game</button></div></div></div><div id="game-over-overlay"><div class="go-card"><div class="go-trophy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M8 5H5a3 3 0 0 0 3 3"/><path d="M16 5h3a3 3 0 0 1-3 3"/><line x1="12" y1="12" x2="12" y2="16"/><path d="M9 20h6"/><path d="M10 16h4l1 4H9l1-4z"/></svg></div><div class="go-label" id="go-winner-label">WINNER</div><div class="go-winner-name" id="go-winner-name">—</div><div class="go-vs-row"><div class="go-side go-winner-side"><div class="go-tag" id="go-tag-winner">Winner</div><div class="go-name" id="go-name-winner">—</div></div><div class="go-divider-x">/</div><div class="go-side go-loser-side"><div class="go-tag" id="go-tag-loser">Loser</div><div class="go-name" id="go-name-loser">—</div></div></div><div class="go-actions"><button id="btn-go-repeat" class="go-btn go-primary"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3M20 3v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3M4 21v-5h5"/></svg><span id="lbl-go-repeat">Play Again</span></button><button id="btn-go-home" class="go-btn go-secondary"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg><span id="lbl-go-home">Back to Home</span></button></div></div></div><div id="confirm-overlay"><div class="confirm-card"><div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div class="confirm-text" id="confirm-text">—</div><div class="confirm-actions"><button id="confirm-btn-yes" class="confirm-btn confirm-danger no-click-sfx"><span id="lbl-confirm-yes">Yes</span></button><button id="confirm-btn-no" class="confirm-btn confirm-cancel"><span id="lbl-confirm-no">Cancel</span></button></div></div></div><div id="app"><div class="topbar" id="topbar"></div><div class="main-area"><div class="board-wrapper" id="board-wrapper"><canvas id="boardCanvas" width="473" height="473"></canvas><div class="wall-confirm-popup" id="wall-confirm-popup"><button class="wall-confirm-btn no-click-sfx" id="wall-confirm-yes"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg><span id="lbl-place-wall">Place Wall</span></button><button class="wall-cancel-btn" id="wall-confirm-no"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button></div><button type="button" class="board-sound-btn no-click-sfx" id="btn-sound-board" aria-label="Sound"><svg class="icon-svg" id="icon-sound-on-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="icon-svg" id="icon-sound-off-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4z"/><line x1="16" y1="9" x2="21" y2="14"/><line x1="21" y1="9" x2="16" y2="14"/></svg></button></div><div class="controls"><button id="btn-move" class="control-btn active"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg></span><span id="lbl-move">Move</span></button><button id="btn-hwall" class="control-btn"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="4" y1="12" x2="20" y2="12"/></svg></span><span id="lbl-hwall">Horizontal</span></button><button id="btn-vwall" class="control-btn"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="4" x2="12" y2="20"/></svg></span><span id="lbl-vwall">Vertical</span></button><button id="btn-undo" class="control-btn neutral"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></span><span id="lbl-undo">Undo</span></button><button id="btn-repeat" class="control-btn neutral"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3M20 3v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3M4 21v-5h5"/></svg></span><span id="lbl-repeat">Repeat</span></button><button id="btn-resign" class="control-btn danger"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="21" x2="5" y2="3"/><path d="M5 4h13l-3 4 3 4H5"/></svg></span><span id="lbl-resign">Resign</span></button><button id="btn-home" class="control-btn neutral"><span class="icon-box"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span><span id="lbl-home">Back to Home</span></button></div><div class="sidebar"><div class="side-box"><h3 id="lbl-move-history">MOVE HISTORY</h3><div id="history-list" class="history-list"><div style="color:#4a5568;font-size:12px;text-align:center;padding:20px 0" id="lbl-start-game">Start a game</div></div><div class="history-pagination"><span style="font-size:25px;padding-bottom:5px">‹</span><span>1 / 1</span><span style="font-size:25px;padding-bottom:5px">›</span></div></div><div class="side-box"><h3 id="lbl-game-info">GAME INFO</h3><div class="info-row"><span class="label" id="lbl-mode">Mode</span><span id="info-mode">—</span></div><div class="info-row"><span class="label" id="lbl-walls-left">Walls Left</span><span id="info-walls">—</span></div><div class="info-row"><span class="label" id="lbl-status">Status</span><span id="status-text">—</span></div></div></div></div><div class="bottom-info"><div class="info-block"><h4 id="lbl-objective">OBJECTIVE</h4><p id="info-objective">Reach the opposite side before the others.</p></div><div class="info-block"><h4 id="lbl-walls">WALLS</h4><p id="info-walls-text">• Tap a spot to select a wall, then confirm.<br>• 10 walls per player.</p></div><div class="info-block"><h4 id="lbl-rules">RULES</h4><p id="info-rules-text">• A wall can never fully block a path.<br>• Walls can't overlap or cross like a "+".</p></div></div></div><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Route 9 — a strategy board game, play pass-and-play offline or with friends online. Block your rivals with walls and race to the finish in 1v1, 2v2 team battles, or Wolf vs Sheep mode.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8Bu/s6v7A3fn53EAL8/THEdVQPJDKl1z+/t+DkQhq8M=' https://unpkg.com https://cdn.yektanet.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.yektanet.com https://*.yektanet.com; font-src 'self' data:; connect-src 'self' https://barricade.onrender.com wss://barricade.onrender.com https://cdn.yektanet.com https://*.yektanet.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon.png">
+    <link rel="apple-touch-icon" href="icon-180.png">
+    <title id="page-title">Route 9 - Dark Mode</title>
+
+    <link rel="stylesheet" href="style.css?v=4">
+
+    <script>
+        !function(e,t,n){e.yektanetAnalyticsObject=n,e[n]=e[n]||function(){e[n].q.push(arguments)},e[n].q=e[n].q||[];var a=t.getElementsByTagName("head")[0],r=new Date,c="https://cdn.yektanet.com/superscript/x6fV5xRI/native-mhdhoseinsh.github.io-47969/yn_pub.js?v="+r.getFullYear().toString()+"0"+r.getMonth()+"0"+r.getDate()+"0"+r.getHours(),s=t.createElement("link");s.rel="preload",s.as="script",s.href=c,a.appendChild(s);var l=t.createElement("script");l.async=!0,l.src=c,a.appendChild(l)}(window,document,"yektanet");
+    </script>
+</head>
+
+<body>
+    <div id="top-controls">
+        <button class="top-ctrl-btn top-kebab-btn" id="btn-top-menu" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2.1"/>
+                <circle cx="12" cy="12" r="2.1"/>
+                <circle cx="12" cy="19" r="2.1"/>
+            </svg>
+        </button>
+        <div class="top-menu-panel" id="top-menu-panel">
+            <a href="help.html" class="top-ctrl-btn" id="btn-help">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/>
+                    <circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/>
+                </svg>
+                <span id="lbl-help">How to Play</span>
+            </a>
+            <button class="top-ctrl-btn" id="btn-about">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"/>
+                    <line x1="12" y1="11" x2="12" y2="16"/>
+                    <circle cx="12" cy="7.6" r="0.9" fill="currentColor" stroke="none"/>
+                </svg>
+                <span id="about-btn-label">About</span>
+            </button>
+            <button class="top-ctrl-btn" id="btn-settings">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span id="settings-btn-label">Settings</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="about-overlay">
+        <div class="about-card">
+            <button class="about-close-x" id="btn-about-close-x" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+            </button>
+            <div class="about-hero">
+                <h2 id="about-title">About Us</h2>
+                <p class="about-tagline" id="about-tagline">Strategy. Walls. Victory.</p>
+            </div>
+            <p id="about-text">Route 9 is an offline, pass-and-play strategy board game inspired by classic wall-blocking puzzle games.</p>
+            <div class="about-features">
+                <div class="about-feature-chip">
+                    <span class="about-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
+                    </span>
+                    <span id="about-feature1">Offline play</span>
+                </div>
+                <div class="about-feature-chip">
+                    <span class="about-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="18" cy="9" r="2.4"/><path d="M15.7 20a5 5 0 0 1 6.8-3.7"/></svg>
+                    </span>
+                    <span id="about-feature2">2–4 players</span>
+                </div>
+                <div class="about-feature-chip">
+                    <span class="about-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    </span>
+                    <span id="about-feature3">Wall strategy</span>
+                </div>
+            </div>
+            <div class="about-divider"></div>
+            <div class="creator-box">
+                <span class="creator-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </span>
+                <div class="creator-info">
+                    <div class="label" id="about-creator-label">Created by</div>
+                    <div class="creator-name" id="about-creator-name">Mohammad hossein shamsi</div>
+                </div>
+            </div>
+            <div class="about-follow">
+                <span class="about-follow-label" id="about-follow-label">Follow us</span>
+                <div class="about-social-links">
+                    <a href="https://instagram.com/shevchenkontop" target="_blank" rel="noopener noreferrer" class="about-social-btn about-social-insta" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+                            <circle cx="12" cy="12" r="4.5"/>
+                            <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+                        </svg>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://t.me/boost/Route9_gg" target="_blank" rel="noopener noreferrer" class="about-social-btn about-social-telegram" aria-label="Telegram">
+                        <svg viewBox="26 48 164 144" fill="currentColor" stroke="none">
+                            <path d="M164.5 62.3 40.6 110.4c-8.5 3.4-8.4 8.1-1.5 10.2l31.8 9.9 73.8-46.5c3.5-2.1 6.7-1 4 1.3l-59.7 53.9h0l-2.3 33.6c3.3 0 4.8-1.5 6.6-3.3l15.9-15.4 33 24.3c6.1 3.4 10.4 1.6 11.9-5.6l21.6-101.7c2.1-8.9-3.4-12.9-9.2-9.8z"/>
+                        </svg>
+                        <span>Telegram</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-overlay">
+        <div class="settings-card">
+            <div class="settings-header">
+                <h2 id="settings-title">Settings</h2>
+                <button class="settings-close-x" id="btn-settings-close-x" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+                </button>
+            </div>
+            <div class="settings-row">
+                <div class="settings-row-info">
+                    <span class="settings-row-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>
+                    </span>
+                    <div class="settings-row-text">
+                        <div class="settings-row-title" id="settings-sound-label">Sound Effects</div>
+                        <div class="settings-row-desc" id="settings-sound-desc">Enable or mute in-game sounds</div>
+                    </div>
+                </div>
+                <button type="button" class="ios-toggle no-click-sfx" id="btn-sound-settings" role="switch" aria-label="Sound">
+                    <span class="ios-toggle-knob"></span>
+                </button>
+            </div>
+            <div class="settings-row settings-row-stack">
+                <div class="settings-row-info">
+                    <span class="settings-row-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M4 5h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5Z"/><path d="M9.5 13 13 8.6" stroke-width="1.8"/></svg>
+                    </span>
+                    <div class="settings-row-text">
+                        <div class="settings-row-title" id="settings-wall-offset-label">Wall Preview Distance</div>
+                        <div class="settings-row-desc" id="settings-wall-offset-desc">How far your finger sits from the wall preview while dragging</div>
+                    </div>
+                </div>
+                <div class="settings-slider-row">
+                    <input type="range" id="wall-offset-slider" class="settings-slider no-click-sfx" min="0" max="63" step="3" value="54">
+                    <span class="settings-slider-value" id="wall-offset-value">54px</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div id="start-overlay">
+        <div class="start-card" id="mode-select-view">
+            <h1 style="text-align: center;" id="mode-title">Route 9</h1>
+            <p class="subtitle" id="start-subtitle">Choose how you want to play</p>
+            <button class="mode-btn" id="btn-home-online">
+                <div class="mode-icon icon-online">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/><path d="M12 3a14.5 14.5 0 0 0 0 18"/><path d="M4.5 7.5h15"/><path d="M4.5 16.5h15"/></svg>
+                </div>
+                <div class="mode-text">
+                    <div class="t" id="home-online-title">Online</div>
+                    <div class="d" id="home-online-desc">Challenge a friend in real time — create a room or join with a code</div>
+                </div>
+            </button>
+            <button class="mode-btn" id="btn-home-offline">
+                <div class="mode-icon icon-offline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.4" width="10" height="19.2" rx="2.3"/><line x1="10" y1="18.3" x2="14" y2="18.3"/><path d="M3.2 8.6c-.9 1.6-.9 5.2 0 6.8" stroke-width="1.8"/><path d="M20.8 8.6c.9 1.6.9 5.2 0 6.8" stroke-width="1.8"/></svg>
+                </div>
+                <div class="mode-text">
+                    <div class="t" id="home-offline-title">Offline</div>
+                    <div class="d" id="home-offline-desc">Local pass-and-play on one device — no internet required</div>
+                </div>
+            </button>
+        </div>
+
+        <div class="start-card" id="offline-mode-pick-view" style="display:none">
+            <h1 style="text-align: center;" id="offline-pick-title">Offline</h1>
+            <p class="subtitle" id="offline-pick-subtitle">Pass-and-play — choose a mode</p>
+            <button class="mode-btn" id="btn-start-classic">
+                <div class="mode-icon icon-classic">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3.4" y="2.5" width="1.8" height="19.5" rx="0.9" fill="#fff"/>
+                        <path d="M5.2 3s1-1 3.8-1 4.6 2 7.4 2 3.6-1 3.6-1v10.8s-1 1-3.6 1-4.6-2-7.4-2-3.8 1-3.8 1z" fill="#fff"/>
+                        <rect x="9" y="3.4" width="2.4" height="2.4" fill="#e8873c"/>
+                        <rect x="13.6" y="6.4" width="2.4" height="2.4" fill="#e8873c"/>
+                        <rect x="9" y="9.2" width="2.4" height="2.4" fill="#e8873c"/>
+                    </svg>
+                </div>
+                <div class="mode-text">
+                    <div class="t" id="mode-classic-title">Classic Race (2 or 4 Players)</div>
+                    <div class="d" id="mode-classic-desc">Block your rivals and race to the other side</div>
+                </div>
+            </button>
+            <button class="mode-btn" id="btn-start-hunter">
+                <div class="mode-icon icon-hunter">
+                    <svg viewBox="0 0 64 64">
+                        <g transform="rotate(-42 32 32)">
+                            <rect x="6" y="27" width="19" height="10" rx="5" fill="#fff"/>
+                            <rect x="21" y="28.4" width="4" height="7.2" fill="#fff"/>
+                            <path d="M25 26 L52 30.5 Q58 32 52 33.5 L38 39 Q29 41 25 38 Z" fill="#fff"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="mode-text">
+                    <div class="t" id="mode-hunter-title">Hunter &amp; Escaper</div>
+                    <div class="d" id="mode-hunter-desc">One escapes, one hunts — first to win takes it</div>
+                </div>
+            </button>
+            <button class="online-back-link" id="btn-offline-pick-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+                <span id="offline-pick-back-label">Back</span>
+            </button>
+        </div>
+
+        <div class="start-card online-card" id="online-setup-view" style="display:none">
+            <div id="online-mode-pick" style="display:none"></div>
+            <div id="online-choice-view" class="online-choice-grid" style="display:none">
+                <button class="online-action-card online-action-create" id="btn-online-create">
+                    <span class="oac-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M4 12h16"/><circle cx="12" cy="12" r="9" opacity=".35"/></svg>
+                    </span>
+                    <span class="oac-text">
+                        <span class="oac-title" id="online-create-title">Create Room</span>
+                        <span class="oac-desc" id="online-create-desc">Make a code and send it to your opponent</span>
+                    </span>
+                    <span class="oac-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+                    </span>
+                </button>
+                <button class="online-action-card online-action-join" id="btn-online-join">
+                    <span class="oac-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5L20 4M14 4h6v6"/><path d="M20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>
+                    </span>
+                    <span class="oac-text">
+                        <span class="oac-title" id="online-join-title">Join with Code</span>
+                        <span class="oac-desc" id="online-join-desc">Enter your opponent's code</span>
+                    </span>
+                    <span class="oac-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+                    </span>
+                </button>
+                <button class="online-back-link" id="btn-online-back1">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+                    <span id="online-back-label">Back</span>
+                </button>
+            </div>
+            <div id="online-create-view" class="online-wait-view online-room-panel" style="display:none">
+                <div class="orp-icon-wrap">
+                    <span class="orp-ring"></span>
+                    <span class="orp-ring orp-ring-2"></span>
+                    <span class="orp-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M4 12h16"/></svg>
+                    </span>
+                </div>
+                <p id="online-status-text" class="online-status-text">Setting up...</p>
+                <div class="online-code-wrap">
+                    <div class="online-code-card">
+                        <div id="online-code-box" class="online-code-box">...</div>
+                        <button class="online-code-copy-btn" id="btn-online-copy-code" aria-label="Copy code" type="button">
+                            <svg class="oc-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                            <svg class="oc-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>
+                        </button>
+                    </div>
+                    <p class="online-code-hint" id="online-code-hint">Send this code to your opponent</p>
+                </div>
+                <button class="online-cancel-btn" id="btn-online-cancel-create" type="button">Cancel</button>
+            </div>
+            <div id="online-join-view" class="online-wait-view online-room-panel is-joining" style="display:none">
+                <div class="orp-icon-wrap">
+                    <span class="orp-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5L20 4M14 4h6v6"/><path d="M20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>
+                    </span>
+                </div>
+                <div class="otp-wrap" id="otp-wrap" dir="ltr">
+                    <input type="text" id="online-join-input" class="online-code-input" style="display:none">
+                    <input type="text" class="otp-box" data-otp-idx="0" inputmode="text" autocomplete="off" maxlength="1">
+                    <input type="text" class="otp-box" data-otp-idx="1" inputmode="text" autocomplete="off" maxlength="1">
+                    <input type="text" class="otp-box" data-otp-idx="2" inputmode="text" autocomplete="off" maxlength="1">
+                    <input type="text" class="otp-box" data-otp-idx="3" inputmode="text" autocomplete="off" maxlength="1">
+                    <input type="text" class="otp-box" data-otp-idx="4" inputmode="text" autocomplete="off" maxlength="1">
+                </div>
+                <button class="online-primary-btn" id="btn-online-connect" type="button">
+                    <span id="online-connect-label">Connect</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+                <button class="online-cancel-btn" id="btn-online-cancel-join" type="button">Cancel</button>
+                <div class="online-join-status-row">
+                    <p id="online-join-status" class="online-status-text" style="margin:0"></p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="start-card" id="name-entry-view" style="display:none">
+            <h1 id="name-entry-title">Enter Player Names</h1>
+            <div class="player-count-toggle game-type-toggle" id="game-type-toggle" data-active="offline" style="display:none">
+                <span class="pc-toggle-slider"></span>
+                <button class="pc-toggle-btn active" id="btn-gt-offline" type="button">
+                    <span class="pc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M8 20h8M12 18v2"/></svg>
+                    </span>
+                    <span id="gt-offline-label">Offline</span>
+                </button>
+                <button class="pc-toggle-btn" id="btn-gt-online" type="button">
+                    <span class="pc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 0 1 3.5 9A15 15 0 0 1 12 21a15 15 0 0 1-3.5-9A15 15 0 0 1 12 3z"/></svg>
+                    </span>
+                    <span id="gt-online-label">Online</span>
+                </button>
+            </div>
+            <p class="game-type-lock-hint" id="game-type-lock-hint" style="display:none"></p>
+            <div class="online-name-lock-info" id="online-name-lock-info">
+                <span class="online-name-lock-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-3.8 4-6 8-6s7 2.2 8 6"/></svg>
+                </span>
+                <span class="online-name-lock-text">
+                    <b id="online-name-lock-title">Name &amp; avatar are set inside the room</b>
+                    <span id="online-name-lock-desc">After you create or join a room, you'll pick your name and avatar color in the lobby.</span>
+                </span>
+            </div>
+            <div class="online-mode-grid" id="online-create-mode-pick" style="display:none">
+                <button class="online-mode-chip" id="btn-online-pick-2p">
+                    <span class="omc-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="2,6.2 2,17.8 9.8,12"/><polygon points="22,6.2 22,17.8 14.2,12" opacity=".55"/><rect x="10.9" y="2.8" width="2.2" height="18.4" rx="1.1"/></svg>
+                    </span>
+                    <span class="t" id="online-pick-2p-label">1 vs 1</span>
+                </button>
+                <button class="online-mode-chip" id="btn-online-pick-4p">
+                    <span class="omc-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="4.6" r="2.6"/><circle cx="19.4" cy="12" r="2.6"/><circle cx="12" cy="19.4" r="2.6"/><circle cx="4.6" cy="12" r="2.6"/></svg>
+                    </span>
+                    <span class="t" id="online-pick-4p-label">2 vs 2</span>
+                </button>
+                <button class="online-mode-chip" id="btn-online-pick-hunter">
+                    <span class="omc-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><ellipse cx="12" cy="16.2" rx="5.2" ry="4.2"/><ellipse cx="5.6" cy="9" rx="2.1" ry="2.7"/><ellipse cx="10.6" cy="5.6" rx="2.1" ry="2.7"/><ellipse cx="16.4" cy="6.8" rx="2.1" ry="2.7"/><ellipse cx="19.6" cy="11.6" rx="1.9" ry="2.4"/></svg>
+                    </span>
+                    <span class="t" id="online-pick-hunter-label">Wolf &amp; Sheep</span>
+                </button>
+            </div>
+            <div class="timer-select-wrap" id="timer-select-wrap">
+                <div class="timer-select-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2h6"/></svg>
+                    <span id="timer-select-label-text">Each Player's Total Time</span>
+                </div>
+                <div class="timer-chip-group" id="timer-chip-group">
+                    <button class="timer-chip no-timer-chip" data-secs="0" type="button"><span class="tc-num" id="timer-chip-none-label">No timer</span></button>
+                    <button class="timer-chip" data-secs="30" type="button"><span class="tc-num">30</span><span class="tc-unit" data-unit="sec">sec</span></button>
+                    <button class="timer-chip" data-secs="60" type="button"><span class="tc-num">1</span><span class="tc-unit" data-unit="min">min</span></button>
+                    <button class="timer-chip active" data-secs="120" type="button"><span class="tc-num">2</span><span class="tc-unit" data-unit="min">min</span></button>
+                    <button class="timer-chip" data-secs="300" type="button"><span class="tc-num">5</span><span class="tc-unit" data-unit="min">min</span></button>
+                    <button class="timer-chip" data-secs="600" type="button"><span class="tc-num">10</span><span class="tc-unit" data-unit="min">min</span></button>
+                </div>
+            </div>
+            <div class="player-count-toggle" id="player-count-toggle" data-active="2" style="display:none">
+                <span class="pc-toggle-slider"></span>
+                <button class="pc-toggle-btn active" id="btn-pc-2" type="button">
+                    <span class="pc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="8.5" cy="7.5" r="3.2"/>
+                            <path d="M2.8 20c.5-3.6 2.9-6 5.7-6s5.2 2.4 5.7 6"/>
+                            <circle cx="17" cy="8.2" r="2.5" opacity=".55"/>
+                            <path d="M14.9 13c2.3.3 4.1 2.3 4.5 5" opacity=".55"/>
+                        </svg>
+                    </span>
+                    <span id="pc-2-label">2 Players</span>
+                </button>
+                <button class="pc-toggle-btn" id="btn-pc-4" type="button">
+                    <span class="pc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="7" cy="7.5" r="2.7"/>
+                            <path d="M2.2 19.2c.4-3 2.4-5 4.8-5s4.4 2 4.8 5"/>
+                            <circle cx="17" cy="7.5" r="2.7"/>
+                            <path d="M12.2 19.2c.4-3 2.4-5 4.8-5s4.4 2 4.8 5"/>
+                        </svg>
+                    </span>
+                    <span id="pc-4-label">2 vs 2</span>
+                </button>
+            </div>
+            <div class="timer-select-wrap online-code-entry-wrap" id="online-code-entry-wrap">
+                <div class="timer-select-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M10.5 13.5L20 4M14 4h6v6"/><path d="M20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>
+                    <span id="online-code-entry-label-text">Join with Code</span>
+                </div>
+                <input type="text" id="online-name-entry-code" class="online-code-input" maxlength="5" autocomplete="off" inputmode="text" dir="ltr" placeholder="CYRU5">
+            </div>
+            <div id="name-fields-2p" style="display:none">
+                <div class="player-setup-card">
+                    <div class="name-input-row">
+                        <span class="avatar-preview" id="avatar-preview-p1" style="background:#E74C3C"></span>
+                        <input type="text" id="input-name-p1" maxlength="13" placeholder="Player 1 (Red)">
+                    </div>
+                    <div class="customize-row">
+                        <div class="swatch-group" id="swatches-p1"></div>
+                    </div>
+                </div>
+                <div class="player-setup-card">
+                    <div class="name-input-row">
+                        <span class="avatar-preview" id="avatar-preview-p2" style="background:#3498DB"></span>
+                        <input type="text" id="input-name-p2" maxlength="13" placeholder="Player 2 (Blue)">
+                    </div>
+                    <div class="customize-row">
+                        <div class="swatch-group" id="swatches-p2"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="name-fields-4p" style="display:none">
+                <div class="team-group team-group-1" id="team-group-1">
+                    <div class="team-group-header">
+                        <span class="team-group-dots"><span class="team-group-dot" id="team-dot-red" style="background:#E74C3C"></span><span class="team-group-dot" id="team-dot-blue" style="background:#3498DB"></span></span>
+                        <span id="team-group-1-label">Team A</span>
+                    </div>
+                    <div class="player-setup-card">
+                        <div class="name-input-row">
+                            <span class="avatar-preview" id="avatar-preview-red" style="background:#E74C3C"></span>
+                            <input type="text" id="input-name-red" maxlength="13" placeholder="Red">
+                        </div>
+                        <div class="customize-row">
+                            <div class="swatch-group" id="swatches-red"></div>
+                        </div>
+                    </div>
+                    <div class="player-setup-card">
+                        <div class="name-input-row">
+                            <span class="avatar-preview" id="avatar-preview-blue" style="background:#3498DB"></span>
+                            <input type="text" id="input-name-blue" maxlength="13" placeholder="Blue">
+                        </div>
+                        <div class="customize-row">
+                            <div class="swatch-group" id="swatches-blue"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-vs-divider"><span id="team-vs-label">VS</span></div>
+                <div class="team-group team-group-2" id="team-group-2">
+                    <div class="team-group-header">
+                        <span class="team-group-dots"><span class="team-group-dot" id="team-dot-green" style="background:#2ECC71"></span><span class="team-group-dot" id="team-dot-yellow" style="background:#F1C40F"></span></span>
+                        <span id="team-group-2-label">Team B</span>
+                    </div>
+                    <div class="player-setup-card">
+                        <div class="name-input-row">
+                            <span class="avatar-preview" id="avatar-preview-green" style="background:#2ECC71"></span>
+                            <input type="text" id="input-name-green" maxlength="13" placeholder="Green">
+                        </div>
+                        <div class="customize-row">
+                            <div class="swatch-group" id="swatches-green"></div>
+                        </div>
+                    </div>
+                    <div class="player-setup-card">
+                        <div class="name-input-row">
+                            <span class="avatar-preview" id="avatar-preview-yellow" style="background:#F1C40F"></span>
+                            <input type="text" id="input-name-yellow" maxlength="13" placeholder="Yellow">
+                        </div>
+                        <div class="customize-row">
+                            <div class="swatch-group" id="swatches-yellow"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="name-fields-hunter" style="display:none">
+                <div class="player-setup-card">
+                    <div class="name-input-row">
+                        <span class="avatar-preview" id="avatar-preview-hunter" style="background:#E74C3C"></span>
+                        <input type="text" id="input-name-hunter" maxlength="13" placeholder="Hunter (Red)">
+                    </div>
+                    <div class="customize-row">
+                        <div class="swatch-group" id="swatches-hunter"></div>
+                    </div>
+                </div>
+                <div class="player-setup-card">
+                    <div class="name-input-row">
+                        <span class="avatar-preview" id="avatar-preview-escaper" style="background:#3498DB"></span>
+                        <input type="text" id="input-name-escaper" maxlength="13" placeholder="Escaper (Blue)">
+                    </div>
+                    <div class="customize-row">
+                        <div class="swatch-group" id="swatches-escaper"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="name-entry-actions">
+                <button id="btn-name-back">Back</button>
+                <button id="btn-name-confirm">Start Game</button>
+            </div>
+        </div>
+
+        <div class="start-card online-card" id="online-lobby-view" style="display:none">
+            <h1 id="online-lobby-title">Set Name &amp; Avatar</h1>
+            <p class="subtitle" id="online-lobby-desc">You have up to 15 seconds to set your name and avatar color</p>
+            <div id="online-lobby-countdown"><span id="online-lobby-countdown-num">15</span></div>
+            <div class="player-setup-card">
+                <div class="name-input-row">
+                    <span class="avatar-preview" id="avatar-preview-online-me" style="background:#E74C3C"></span>
+                    <input type="text" id="input-name-online-me" maxlength="13" placeholder="">
+                    <span class="role-live-badge" id="role-live-badge-me" style="display:none"></span>
+                </div>
+                <div class="customize-row">
+                    <div class="swatch-group" id="swatches-online-me"></div>
+                </div>
+            </div>
+            <div class="player-setup-card online-lobby-opp-card" id="online-lobby-opp1-card">
+                <div class="name-input-row">
+                    <span class="avatar-preview" id="avatar-preview-online-opp" style="background:#3498DB"></span>
+                    <span id="name-online-opp" style="font-weight:700;font-size:15px;"></span>
+                    <span class="role-live-badge" id="role-live-badge-opp" style="display:none"></span>
+                    <span class="forfeit-badge" id="forfeit-badge-online-opp1" style="display:none">—</span>
+                </div>
+            </div>
+            <div class="player-setup-card online-lobby-opp-card" id="online-lobby-opp2-card" style="display:none">
+                <div class="name-input-row">
+                    <span class="avatar-preview" id="avatar-preview-online-opp2" style="background:#2ECC71"></span>
+                    <span id="name-online-opp2" style="font-weight:700;font-size:15px;"></span>
+                    <span class="forfeit-badge" id="forfeit-badge-online-opp2" style="display:none">—</span>
+                </div>
+            </div>
+            <div class="player-setup-card online-lobby-opp-card" id="online-lobby-opp3-card" style="display:none">
+                <div class="name-input-row">
+                    <span class="avatar-preview" id="avatar-preview-online-opp3" style="background:#F1C40F"></span>
+                    <span id="name-online-opp3" style="font-weight:700;font-size:15px;"></span>
+                    <span class="forfeit-badge" id="forfeit-badge-online-opp3" style="display:none">—</span>
+                </div>
+            </div>
+            <div class="hunter-role-pick" id="hunter-role-pick-section" style="display:none">
+                <p class="hunter-role-pick-label" id="hunter-role-pick-label">Pick your role</p>
+                <div class="hunter-role-options">
+                    <button type="button" class="hunter-role-btn" id="btn-pick-role-escaper" data-role="escaper">
+                        <span class="hunter-role-icon icon-escaper">
+                            <svg viewBox="0 0 64 64" class="role-icon-svg" aria-hidden="true"><g fill="currentColor"><circle cx="15" cy="25" r="9"/><circle cx="27" cy="16" r="10.5"/><circle cx="40" cy="17" r="10"/><circle cx="51" cy="27" r="9"/><circle cx="47" cy="41" r="9.5"/><circle cx="30" cy="45" r="12"/><circle cx="15" cy="39" r="8.5"/></g><ellipse cx="30" cy="43" rx="11" ry="9" fill="#fff8ec"/><circle cx="26" cy="41" r="1.8" fill="#2b2b2b"/><circle cx="35" cy="41" r="1.8" fill="#2b2b2b"/><path d="M27 47q3.5 2.6 7 0" stroke="#2b2b2b" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+                        </span>
+                        <span class="hunter-role-btn-label" id="hunter-role-btn-escaper-label">Survivor</span>
+                    </button>
+                    <button type="button" class="hunter-role-btn" id="btn-pick-role-hunter" data-role="hunter">
+                        <span class="hunter-role-icon icon-hunter">
+                            <svg viewBox="0 0 64 64" class="role-icon-svg" aria-hidden="true"><g fill="currentColor"><path d="M13 8 27 24 19 27z"/><path d="M51 8 37 24 45 27z"/><path d="M32 15c12.7 0 21 9.8 21 21.5C53 48.5 45 55 32 55S11 48.5 11 36.5C11 24.8 19.3 15 32 15z"/></g><circle cx="23.5" cy="34" r="2.4" fill="#1b1b1b"/><circle cx="40.5" cy="34" r="2.4" fill="#1b1b1b"/><path d="M32 37 26.5 44h11z" fill="#1b1b1b"/><path d="M24 48q8 4.5 16 0" stroke="#1b1b1b" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                        </span>
+                        <span class="hunter-role-btn-label" id="hunter-role-btn-hunter-label">Hunter</span>
+                    </button>
+                </div>
+            </div>
+            <p id="online-lobby-hint" style="color:var(--text-muted);font-size:12px;text-align:center;margin-top:2px;">You can only change your own name and color</p>
+        </div>
+    </div>
+
+    <div id="hunter-role-reveal-overlay">
+        <div class="hunter-reveal-card">
+            <h2 id="hunter-reveal-title">Role Lottery</h2>
+            <p id="hunter-reveal-sub">You both picked the same role — flipping a coin to decide!</p>
+            <div class="hunter-reveal-slots">
+                <div class="hunter-reveal-slot" id="hunter-reveal-slot-me">
+                    <div class="hunter-reveal-icon icon-escaper" id="hunter-reveal-icon-me"><svg viewBox="0 0 64 64" class="role-icon-svg" aria-hidden="true"><g fill="currentColor"><circle cx="15" cy="25" r="9"/><circle cx="27" cy="16" r="10.5"/><circle cx="40" cy="17" r="10"/><circle cx="51" cy="27" r="9"/><circle cx="47" cy="41" r="9.5"/><circle cx="30" cy="45" r="12"/><circle cx="15" cy="39" r="8.5"/></g><ellipse cx="30" cy="43" rx="11" ry="9" fill="#fff8ec"/><circle cx="26" cy="41" r="1.8" fill="#2b2b2b"/><circle cx="35" cy="41" r="1.8" fill="#2b2b2b"/><path d="M27 47q3.5 2.6 7 0" stroke="#2b2b2b" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div>
+                    <div class="hunter-reveal-name" id="hunter-reveal-name-me"></div>
+                    <div class="hunter-reveal-role" id="hunter-reveal-role-me"></div>
+                </div>
+                <div class="hunter-reveal-vs">VS</div>
+                <div class="hunter-reveal-slot" id="hunter-reveal-slot-opp">
+                    <div class="hunter-reveal-icon icon-hunter" id="hunter-reveal-icon-opp"><svg viewBox="0 0 64 64" class="role-icon-svg" aria-hidden="true"><g fill="currentColor"><path d="M13 8 27 24 19 27z"/><path d="M51 8 37 24 45 27z"/><path d="M32 15c12.7 0 21 9.8 21 21.5C53 48.5 45 55 32 55S11 48.5 11 36.5C11 24.8 19.3 15 32 15z"/></g><circle cx="23.5" cy="34" r="2.4" fill="#1b1b1b"/><circle cx="40.5" cy="34" r="2.4" fill="#1b1b1b"/><path d="M32 37 26.5 44h11z" fill="#1b1b1b"/><path d="M24 48q8 4.5 16 0" stroke="#1b1b1b" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div>
+                    <div class="hunter-reveal-name" id="hunter-reveal-name-opp"></div>
+                    <div class="hunter-reveal-role" id="hunter-reveal-role-opp"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-overlay">
+        <div class="go-card">
+            <div class="go-trophy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/>
+                    <path d="M8 5H5a3 3 0 0 0 3 3"/>
+                    <path d="M16 5h3a3 3 0 0 1-3 3"/>
+                    <line x1="12" y1="12" x2="12" y2="16"/>
+                    <path d="M9 20h6"/>
+                    <path d="M10 16h4l1 4H9l1-4z"/>
+                </svg>
+            </div>
+            <div class="go-label" id="go-winner-label">WINNER</div>
+            <div class="go-winner-name" id="go-winner-name">—</div>
+            <div class="go-vs-row">
+                <div class="go-side go-winner-side">
+                    <div class="go-tag" id="go-tag-winner">Winner</div>
+                    <div class="go-name" id="go-name-winner">—</div>
+                </div>
+                <div class="go-divider-x">/</div>
+                <div class="go-side go-loser-side">
+                    <div class="go-tag" id="go-tag-loser">Loser</div>
+                    <div class="go-name" id="go-name-loser">—</div>
+                </div>
+            </div>
+            <p id="go-online-status"></p>
+            <div class="go-actions">
+                <button id="btn-go-repeat" class="go-btn go-primary">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12a8 8 0 0 1 14-5.3M20 3v5h-5"/>
+                        <path d="M20 12a8 8 0 0 1-14 5.3M4 21v-5h5"/>
+                    </svg>
+                    <span id="lbl-go-repeat">Play Again</span>
+                </button>
+                <button id="btn-go-home" class="go-btn go-secondary">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 11l9-8 9 8"/>
+                        <path d="M5 10v10h14V10"/>
+                        <path d="M9 20v-6h6v6"/>
+                    </svg>
+                    <span id="lbl-go-home">Back to Home</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-overlay">
+        <div class="confirm-card">
+            <div class="confirm-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                </svg>
+            </div>
+            <div class="confirm-text" id="confirm-text">—</div>
+            <div class="confirm-actions">
+                <button id="confirm-btn-yes" class="confirm-btn confirm-danger no-click-sfx">
+                    <span id="lbl-confirm-yes">Yes</span>
+                </button>
+                <button id="confirm-btn-no" class="confirm-btn confirm-cancel">
+                    <span id="lbl-confirm-no">Cancel</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shown on page load when localStorage remembers a match that was still
+         in progress on this device (browser closed/refreshed mid-game). Lets
+         the player jump straight back into the live board, or forfeit so the
+         opponent is declared the winner right away instead of waiting out
+         the 30s disconnect grace timer. Always rendered in English by
+         design, regardless of the site's current language. -->
+    <div id="resume-game-overlay">
+        <div class="resume-card">
+            <div class="resume-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 3"/>
+                </svg>
+            </div>
+            <div class="resume-badge" id="resume-room-code">Room —</div>
+            <div class="resume-title">Your Match Is Still Live!</div>
+            <p class="resume-text">Looks like you stepped away mid-game. Jump back in and keep fighting for the win — or forfeit now and your opponent takes it.</p>
+            <div class="resume-actions">
+                <button id="btn-resume-yes" class="resume-btn resume-primary">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="6 3 20 12 6 21 6 3"/>
+                    </svg>
+                    <span>Rejoin &amp; Continue</span>
+                </button>
+                <button id="btn-resume-no" class="resume-btn resume-secondary">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 22V4"/>
+                        <path d="M4 4h13l-2.5 4L17 12H4"/>
+                    </svg>
+                    <span>Forfeit Match</span>
+                </button>
+            </div>
+            <div class="resume-status" id="resume-status"></div>
+        </div>
+    </div>
+
+    <div id="app">
+        <div class="topbar" id="topbar"></div>
+        <div class="main-area">
+            <div class="board-wrapper" id="board-wrapper">
+                <canvas id="boardCanvas" width="473" height="473"></canvas>
+                <div class="wall-confirm-popup" id="wall-confirm-popup">
+                    <button class="wall-confirm-btn no-click-sfx" id="wall-confirm-yes">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="4 12 10 18 20 6"/>
+                        </svg>
+                        <span id="lbl-place-wall">Place Wall</span>
+                    </button>
+                    <button class="wall-cancel-btn" id="wall-confirm-no">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="5" x2="19" y2="19"/>
+                            <line x1="19" y1="5" x2="5" y2="19"/>
+                        </svg>
+                    </button>
+                </div>
+                <button type="button" class="board-sound-btn no-click-sfx" id="btn-sound-board" aria-label="Sound">
+                    <svg class="icon-svg" id="icon-sound-on-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+                        <path d="M16.5 8.5a5 5 0 0 1 0 7"/>
+                        <path d="M19 6a8.5 8.5 0 0 1 0 12"/>
+                    </svg>
+                    <svg class="icon-svg" id="icon-sound-off-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                        <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+                        <line x1="16" y1="9" x2="21" y2="14"/>
+                        <line x1="21" y1="9" x2="16" y2="14"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="controls">
+                <button id="btn-move" class="control-btn active">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg>
+                    </span>
+                    <span id="lbl-move">Move</span>
+                </button>
+                <button id="btn-hwall" class="control-btn">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="4" y1="12" x2="20" y2="12"/></svg>
+                    </span>
+                    <span id="lbl-hwall">Horizontal</span>
+                </button>
+                <button id="btn-vwall" class="control-btn">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    </span>
+                    <span id="lbl-vwall">Vertical</span>
+                </button>
+                <button id="btn-undo" class="control-btn neutral">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 14L4 9l5-5"/>
+                            <path d="M4 9h11a5 5 0 0 1 0 10h-1"/>
+                        </svg>
+                    </span>
+                    <span id="lbl-undo">Undo</span>
+                </button>
+                <button id="btn-repeat" class="control-btn neutral">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 12a8 8 0 0 1 14-5.3M20 3v5h-5"/>
+                            <path d="M20 12a8 8 0 0 1-14 5.3M4 21v-5h5"/>
+                        </svg>
+                    </span>
+                    <span id="lbl-repeat">Repeat</span>
+                </button>
+                <button id="btn-resign" class="control-btn danger">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="21" x2="5" y2="3"/>
+                            <path d="M5 4h13l-3 4 3 4H5"/>
+                        </svg>
+                    </span>
+                    <span id="lbl-resign">Resign</span>
+                </button>
+                <button id="btn-home" class="control-btn neutral">
+                    <span class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 11l9-8 9 8"/>
+                            <path d="M5 10v10h14V10"/>
+                            <path d="M9 20v-6h6v6"/>
+                        </svg>
+                    </span>
+                    <span id="lbl-home">Back to Home</span>
+                </button>
+            </div>
+            <div class="sidebar">
+                <div class="side-box">
+                    <h3 id="lbl-move-history">MOVE HISTORY</h3>
+                    <div id="history-list" class="history-list">
+                        <div style="color:#4a5568;font-size:12px;text-align:center;padding:20px 0" id="lbl-start-game">Start a game</div>
+                    </div>
+                    <div class="history-pagination">
+                        <span style="font-size:25px;padding-bottom:5px">‹</span>
+                        <span>1 / 1</span>
+                        <span style="font-size:25px;padding-bottom:5px">›</span>
+                    </div>
+                </div>
+                <div class="side-box">
+                    <h3 id="lbl-game-info">GAME INFO</h3>
+                    <div class="info-row">
+                        <span class="label" id="lbl-mode">Mode</span>
+                        <span id="info-mode">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label" id="lbl-walls-left">Walls Left</span>
+                        <span id="info-walls">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label" id="lbl-status">Status</span>
+                        <span id="status-text">—</span>
+                    </div>
+                    <div class="info-row" id="online-turn-row" style="display:none">
+                        <span class="label" id="lbl-online-turn">Turn</span>
+                        <span><span class="otb-dot"></span><span class="otb-text">—</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-info">
+            <div class="info-block">
+                <h4 id="lbl-objective">OBJECTIVE</h4>
+                <p id="info-objective">Reach the opposite side before the others.</p>
+            </div>
+            <div class="info-block">
+                <h4 id="lbl-walls">WALLS</h4>
+                <p id="info-walls-text">• Tap a spot to select a wall, then confirm.<br>• 10 walls per player.</p>
+            </div>
+            <div class="info-block">
+                <h4 id="lbl-rules">RULES</h4>
+                <p id="info-rules-text">• A wall can never fully block a path.<br>• Walls can't overlap or cross like a "+".</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+    <script src="room.js?v=3"></script>
+    <script src="app.js?v=5"></script>
+</body>
+</html>
