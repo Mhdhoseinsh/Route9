@@ -1270,9 +1270,42 @@
                 }, 1000)
             }
 
+            // True only during the post-join, pre-game "set your name and
+            // avatar" lobby countdown (see showOnlineLobby/tickOnlineLobbyCountdown).
+            // onlineLobby.timer is set the instant that countdown starts and
+            // cleared the instant it finishes (or the online session is torn
+            // down) — so it doubles as a cheap "are we still in the lobby"
+            // check without needing a separate flag.
+            function inOnlineLobbyPhase() {
+                return !!onlineLobby.timer
+            }
+
             function onOnlinePresenceChange(playersObj) {
                 if (!onlineState.active) return;
                 const maxP = onlineMaxPlayers();
+                // If someone bails while we're still sitting in the lobby
+                // countdown (before the match itself has even started),
+                // there's no "player" object yet for them and no in-game
+                // grace period makes sense — waiting out the rest of the
+                // countdown would just dump the remaining player(s) into a
+                // game with a permanently empty seat. Cancel the room right
+                // here instead.
+                if (inOnlineLobbyPhase()) {
+                    for (let i = 0; i < maxP; i++) {
+                        if (i === onlineState.localPlayerId) continue;
+                        const other = playersObj && playersObj[i];
+                        const isConnected = !other || other.connected !== !1;
+                        if (!isConnected) {
+                            teardownOnline(!1);
+                            showStartScreen('mode-select-view');
+                            startOverlay.style.display = 'flex';
+                            appEl.classList.remove('visible');
+                            showToast('Opponent left — room cancelled', 'warning');
+                            return
+                        }
+                    }
+                    return
+                }
                 for (let i = 0; i < maxP; i++) {
                     if (i === onlineState.localPlayerId) continue;
                     const p = players.find(pl => pl.id === i);

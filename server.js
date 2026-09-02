@@ -185,9 +185,24 @@ function handleLeave(socket) {
   if (!code || slot === null || slot === undefined) return;
   const room = rooms.get(code);
   if (room && room.players[slot]) {
-    room.players[slot].connected = false;
-    room.players[slot].leftAt = Date.now();
-    touch(room);
+    // BUGFIX (stuck "Disconnected" overlay after a fast refresh+rejoin):
+    // a full page refresh doesn't close the old socket instantly — the
+    // server can detect that socket's disconnect a moment LATER, after
+    // the player has already reloaded and rejoined on a brand-new socket
+    // (reclaiming the same slot via their token). If we blindly trusted
+    // every 'disconnect' event here, that late/stale event from the OLD
+    // socket would stomp connected=false back onto a slot that a NEWER
+    // socket already marked connected=true — and since presence is only
+    // pushed on change, no further update would ever arrive to correct
+    // it. The opponent's disconnect overlay would then sit there for the
+    // full 30s grace period and wrongly forfeit a player who actually
+    // reconnected in time. Guard against this by only applying the leave
+    // if this socket is still the one actually occupying the slot.
+    if (room.players[slot].socketId === socket.id) {
+      room.players[slot].connected = false;
+      room.players[slot].leftAt = Date.now();
+      touch(room);
+    }
   }
   socket.leave('room:' + code);
   socket.data.roomCode = null;
@@ -302,6 +317,9 @@ io.on('connection', (socket) => {
         if (existing && tokensMatch(existing.token, token)) {
           existing.connected = true;
           existing.leftAt = null;
+          // Record which socket now owns this slot so a late 'disconnect'
+          // from a stale/old socket (see handleLeave) can't override it.
+          existing.socketId = socket.id;
           assignSocketToSlot(socket, code, i);
           if (ack) ack({ ok: true, slot: i, mode: room.mode, token, t: Date.now() });
           broadcastPresence(code);
@@ -322,7 +340,7 @@ io.on('connection', (socket) => {
     if (slot === -1) { if (ack) ack({ ok: false, error: 'full' }); return; }
 
     const newToken = crypto.randomBytes(16).toString('hex');
-    room.players[slot] = { token: newToken, joinedAt: Date.now(), connected: true, leftAt: null };
+    room.players[slot] = { token: newToken, joinedAt: Date.now(), connected: true, leftAt: null, socketId: socket.id };
     assignSocketToSlot(socket, code, slot);
     if (ack) ack({ ok: true, slot, mode: room.mode, token: newToken, t: Date.now() });
     broadcastPresence(code);
