@@ -122,13 +122,17 @@ function maxPlayersForMode(mode) {
 // bytes). Generous enough for the biggest legitimate message — a full
 // board-state snapshot (state-sync/checkpoint) with a long move history —
 // while still ruling out someone using this server as a free relay for
-// arbitrary large blobs.
+// arbitrary large blobs. Anything that can't even be measured (e.g. no
+// payload at all) is let through rather than dropped — this check exists
+// to catch genuinely oversized blobs, not to second-guess message shapes;
+// silently swallowing a legitimate message here would just look like a
+// mysterious disconnect/desync to two honest players.
 const MAX_PAYLOAD_BYTES = 100 * 1024;
 function payloadSizeOk(value) {
   try {
     return Buffer.byteLength(JSON.stringify(value)) <= MAX_PAYLOAD_BYTES;
   } catch (e) {
-    return false; // not JSON-serializable (e.g. a circular ref) — reject
+    return true;
   }
 }
 
@@ -200,13 +204,16 @@ function rateLimitOk(socket) {
   return true;
 }
 
-// Separate, tighter limiter just for room-management calls (createRoom /
-// joinRoom / roomExists). A real player calls these a handful of times per
-// session at most, including reconnect retries — this budget is generous
-// enough to never bother anyone playing normally, while making it
-// impractical for a script on one connection to brute-force room codes or
-// hammer the server with room-creation requests.
-const ROOM_OP_LIMIT_MAX = 20;
+// Separate limiter for room-management calls (createRoom/joinRoom/
+// roomExists). Real players call these a handful of times per session —
+// but on a shaky mobile connection, a player re-tapping "resume" a few
+// times, or two people accidentally reloading around the same moment, can
+// easily add up to more than that. This budget is set generously so real
+// play (including a rocky reconnect) never gets anywhere near it, while
+// still making a code-guessing script impractical: even at this limit,
+// brute-forcing the ~39 million possible room codes on one connection
+// would take years.
+const ROOM_OP_LIMIT_MAX = 60;
 const ROOM_OP_LIMIT_WINDOW_MS = 10000;
 function roomOpLimitOk(socket) {
   const now = Date.now();
