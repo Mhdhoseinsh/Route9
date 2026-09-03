@@ -16,10 +16,6 @@
             function safeStorageSet(key, value) {
                 try { localStorage.setItem(key, value); return !0 } catch (e) { return !1 }
             }
-            function safeStorageRemove(key) {
-                try { localStorage.removeItem(key) } catch (e) {}
-            }
-
             // Registering this actually turns on the caching strategy already
             // written in sw.js (fonts/icons/webp served from disk on repeat
             // visits) — previously the file existed but nothing ever called
@@ -222,7 +218,7 @@
             // been fully removed — this is a plain, single dictionary now,
             // not a per-language lookup table.)
             const translations = {
-                pageTitle: 'Route 9 - Dark Mode',
+                pageTitle: 'Route 9',
                     modeTitle: 'Route 9',
                     aboutBtn: 'About',
                     soundOn: 'Sound',
@@ -398,16 +394,6 @@
             function setTextContent(elId, text) {
                 const el = document.getElementById(elId);
                 if (el) el.textContent = text
-            }
-
-            function escapeHTML(str) {
-                return String(str).replace(/[&<>"]/g, function(m) {
-                    if (m === '&') return '&amp;';
-                    if (m === '<') return '&lt;';
-                    if (m === '>') return '&gt;';
-                    if (m === '"') return '&quot;';
-                    return m
-                })
             }
 
             // ===== Toast notifications ==========================================
@@ -799,13 +785,6 @@
                 const escaperId = hashStringToUnit(seed) < 0.5 ? 0 : 1;
                 const hunterId = escaperId === 0 ? 1 : 0;
                 return { escaperId, hunterId, needsLottery: !0 }
-            }
-
-            function genRoomCode() {
-                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-                let s = '';
-                for (let i = 0; i < 5; i++) s += chars[Math.floor(Math.random() * chars.length)];
-                return s
             }
 
             function sendOnline(data) {
@@ -1353,10 +1332,6 @@
                     if (p.forfeited || p.finished) continue;
                     startDisconnectCountdown(p)
                 }
-            }
-
-            function fmt2(str, name) {
-                return str.replace('{name}', name)
             }
 
             function beginOnlineGame(mode) {
@@ -2018,10 +1993,6 @@
                 return (currentCustom[slot] && currentCustom[slot].color) || DEFAULT_COLOR_FOR[slot]
             }
 
-            function customBackground(slot) {
-                return customColor(slot)
-            }
-
             function refreshSwatchUI(slot) {
                 const avatarEl = document.getElementById('avatar-preview-' + slot);
                 if (avatarEl) {
@@ -2080,13 +2051,6 @@
                 const ids = [];
                 for (let i = 0; i < maxP; i++) if (i !== onlineState.localPlayerId) ids.push(i);
                 return ids
-            }
-
-            function lobbySlots(mode) {
-                if (mode === 'hunter') {
-                    return onlineState.localPlayerId === 0 ? { me: 'escaper', opp: 'hunter' } : { me: 'hunter', opp: 'escaper' }
-                }
-                return onlineState.localPlayerId === 0 ? { me: 'p1', opp: 'p2' } : { me: 'p2', opp: 'p1' }
             }
 
             function broadcastOnlineProfile() {
@@ -3046,10 +3010,6 @@
                 return getDefaultPlayerName(p)
             }
 
-            function teamName(team) {
-                return translations.teamNames[team]
-            }
-
             function teamPlayerNames(team) {
                 return players.filter(p => p.team === team).map(playerDisplayName).join(' & ')
             }
@@ -3129,14 +3089,6 @@
             document.getElementById('btn-start-hunter').onclick = () => { nameEntryOrigin = 'offline'; showNameEntry('hunter') };
             document.getElementById('btn-pc-2').onclick = () => switchClassicSubMode('2p');
             document.getElementById('btn-pc-4').onclick = () => switchClassicSubMode('4p');
-
-            function playCardAnimation() {
-                const card = document.getElementById('name-entry-view');
-                if (!card) return;
-                card.classList.remove('card-anim');
-                void card.offsetWidth;
-                card.classList.add('card-anim')
-            }
 
             function setGameType(isOnline) {
                 const onlineBtn = document.getElementById('btn-gt-online');
@@ -3553,10 +3505,6 @@
 
             function getCoordStr(row, col) {
                 return colLetters[col] + (9 - row)
-            }
-
-            function inBounds(r, c) {
-                return r >= 0 && r < 9 && c >= 0 && c < 9
             }
 
             function canPassBetween(r, c, dr, dc) {
