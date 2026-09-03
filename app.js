@@ -1006,7 +1006,13 @@
                 if (now < liveResyncCooldownUntil) return; // avoid resync storms from several near-simultaneous gaps
                 liveResyncCooldownUntil = now + 6000;
                 awaitingStateSync = !0;
-                showToast("Reconnecting the board with your opponent…", 'warning');
+                // No toast here on purpose: this fires on ordinary brief
+                // network hiccups (a dropped/delayed packet), and the fix
+                // itself is invisible and near-instant almost every time —
+                // announcing it as "reconnecting" made every small hiccup
+                // look and sound like the match was restarting. The error
+                // toast below still fires if it genuinely fails, so the
+                // player is only interrupted when something's actually wrong.
                 sendOnline({ type: 'request-state' });
                 stateSyncTimeoutId = setTimeout(() => {
                     if (!awaitingStateSync) return;
@@ -1454,7 +1460,15 @@
             // Rebuilds every piece of client-side state a fresh page load lost,
             // then reveals the board exactly like completeOnlineLobbyStart()
             // does at the end of the normal online-lobby flow.
-            function applyFullGameStateSnapshot(state) {
+            // `silent` is true for a live mid-match resync (the two devices
+            // briefly drifted while the match was already visibly running —
+            // e.g. a flaky mobile connection dropped/reordered a message)
+            // and false/omitted for the real "resume after reload" flow. A
+            // live resync should feel like nothing happened — it's a
+            // background correction, not a new match starting — so it skips
+            // the game-start fanfare (sound) that only makes sense the first
+            // time the board actually appears.
+            function applyFullGameStateSnapshot(state, silent) {
                 gameMode = state.gameMode;
                 turnOrder = state.turnOrder.slice();
                 turn = state.turn;
@@ -1532,7 +1546,7 @@
                 // does after any normal turn change.
                 turnTimerPlayerId = null;
                 syncTurnTimer();
-                sfxGameStart();
+                if (!silent) sfxGameStart();
                 saveOnlineSession();
                 // Fresh connection/resync — the next inbound message from
                 // each sender re-anchors that sender's seq baseline instead
@@ -1548,6 +1562,14 @@
                 if (!awaitingStateSync) return; // stray/late reply, already handled
                 awaitingStateSync = !1;
                 if (stateSyncTimeoutId) { clearTimeout(stateSyncTimeoutId); stateSyncTimeoutId = null }
+                // pendingResumeSession is only ever set by the actual
+                // "resume after reload" flow (checkForResumableOnlineSession
+                // / btnResumeYes). If it's empty here, the match was already
+                // visibly on-screen and this is just requestLiveResync()
+                // quietly re-syncing us with the opponent after a brief
+                // network hiccup — not a real reconnect, so it shouldn't be
+                // announced as one.
+                const isReloadResume = !!pendingResumeSession;
                 const state = data && data.state;
                 if (!state) {
                     showResumeStatus("Sync failed — please try again.");
@@ -1568,10 +1590,14 @@
                     showToast('That match already ended while you were away.', 'warning');
                     return
                 }
-                applyFullGameStateSnapshot(state);
+                applyFullGameStateSnapshot(state, !isReloadResume);
                 closeResumeOverlay();
                 pendingResumeSession = null;
-                showToast("You're back! Continue the match.", 'success');
+                // Only the real reload/reconnect flow gets the "you're
+                // back" toast — a live mid-match resync corrects the board
+                // quietly in the background so ordinary latency doesn't
+                // read as the match constantly restarting.
+                if (isReloadResume) showToast("You're back! Continue the match.", 'success');
                 drainOnlineMsgQueue()
             }
 

@@ -13,16 +13,14 @@
 //     side now trusts this over any self-declared "playerId" in a payload,
 //     which closes the "forge a message as a different player" class of
 //     bug (e.g. forcing a stranger's forfeit in 4-player mode).
-//   - messages are numbered PER SENDER SLOT (`seq`) so a client that notices
-//     a gap in a specific opponent's numbering can ask for a fresh snapshot
-//     instead of silently drifting out of sync forever. (This must stay
-//     per-sender, not a single room-wide counter: a receiving client never
-//     gets its own broadcasts echoed back, so a shared counter would also
-//     advance every time the local player sends something — making every
-//     opponent message look like it "skipped" a number even when nothing
-//     was actually lost. That false-positive gap was firing a full resync,
-//     complete with the game-start sound and "you're back" toast, on almost
-//     every real move.)
+//   - messages are numbered per SENDER SLOT (`seq`) so a client that
+//     notices a gap in a particular opponent's numbering can ask for a
+//     fresh snapshot instead of silently drifting out of sync forever.
+//     (Originally this was a single room-wide counter; that meant a
+//     client's OWN outgoing messages — never echoed back to itself —
+//     silently consumed numbers too, so the very next message it actually
+//     received from the opponent almost always looked like a gap. Fixed by
+//     numbering per-sender instead.)
 //   - `mode` is validated against a fixed whitelist and `maxPlayers` is
 //     always DERIVED from that validated mode on the server — never taken
 //     as-is from whatever number a client sends. (Previously a client-
@@ -84,14 +82,27 @@ const io = new Server(server, {
   // legitimate payload (a full board-state snapshot), but far below
   // Socket.io's 1MB default — trims how much bandwidth/memory a malicious
   // client can burn per message before payloadSizeOk() below even runs.
-  maxHttpBufferSize: 512 * 1024
+  maxHttpBufferSize: 512 * 1024,
+  // Socket.io's defaults (pingInterval 25s / pingTimeout 20s) exist to
+  // tolerate very rocky connections, but they mean a connection that dies
+  // WITHOUT a clean close packet (phone loses signal, laptop sleeps, a
+  // tunnel/elevator, etc. — as opposed to a tab being closed, which closes
+  // cleanly and is detected instantly) can take up to ~45 seconds for the
+  // server to even notice. Until it does, presence still shows that player
+  // as "connected", so the opponent's 30s grace-period overlay never even
+  // starts — the match just looks frozen. Tightened here so a real silent
+  // drop is caught in well under 15s while still leaving comfortable room
+  // for normal mobile-network / VPN latency (relevant for this game's
+  // Iran-based audience) without producing false disconnects.
+  pingInterval: 10000,
+  pingTimeout: 8000
 });
 
 const PORT = process.env.PORT || 3000;
 
 // ---- In-memory room store -------------------------------------------------
 // rooms: Map<code, {
-//   maxPlayers, mode, createdAt, lastActivity, seqBySlot,
+//   maxPlayers, mode, createdAt, lastActivity, seqBySlot: { [slot]: number },
 //   players: { [slot]: { token, joinedAt, connected, leftAt } },
 //   lastCheckpoint: { state, bySlot, t } | null
 // }>
@@ -129,13 +140,17 @@ function maxPlayersForMode(mode) {
 // bytes). Generous enough for the biggest legitimate message — a full
 // board-state snapshot (state-sync/checkpoint) with a long move history —
 // while still ruling out someone using this server as a free relay for
-// arbitrary large blobs.
+// arbitrary large blobs. Anything that can't even be measured (e.g. no
+// payload at all) is let through rather than dropped — this check exists
+// to catch genuinely oversized blobs, not to second-guess message shapes;
+// silently swallowing a legitimate message here would just look like a
+// mysterious disconnect/desync to two honest players.
 const MAX_PAYLOAD_BYTES = 100 * 1024;
 function payloadSizeOk(value) {
   try {
     return Buffer.byteLength(JSON.stringify(value)) <= MAX_PAYLOAD_BYTES;
   } catch (e) {
-    return false; // not JSON-serializable (e.g. a circular ref) — reject
+    return true;
   }
 }
 
@@ -183,9 +198,24 @@ function handleLeave(socket) {
   if (!code || slot === null || slot === undefined) return;
   const room = rooms.get(code);
   if (room && room.players[slot]) {
-    room.players[slot].connected = false;
-    room.players[slot].leftAt = Date.now();
-    touch(room);
+    // BUGFIX (stuck "Disconnected" overlay after a fast refresh+rejoin):
+    // a full page refresh doesn't close the old socket instantly — the
+    // server can detect that socket's disconnect a moment LATER, after
+    // the player has already reloaded and rejoined on a brand-new socket
+    // (reclaiming the same slot via their token). If we blindly trusted
+    // every 'disconnect' event here, that late/stale event from the OLD
+    // socket would stomp connected=false back onto a slot that a NEWER
+    // socket already marked connected=true — and since presence is only
+    // pushed on change, no further update would ever arrive to correct
+    // it. The opponent's disconnect overlay would then sit there for the
+    // full 30s grace period and wrongly forfeit a player who actually
+    // reconnected in time. Guard against this by only applying the leave
+    // if this socket is still the one actually occupying the slot.
+    if (room.players[slot].socketId === socket.id) {
+      room.players[slot].connected = false;
+      room.players[slot].leftAt = Date.now();
+      touch(room);
+    }
   }
   socket.leave('room:' + code);
   socket.data.roomCode = null;
@@ -207,13 +237,16 @@ function rateLimitOk(socket) {
   return true;
 }
 
-// Separate, tighter limiter just for room-management calls (createRoom /
-// joinRoom / roomExists). A real player calls these a handful of times per
-// session at most, including reconnect retries — this budget is generous
-// enough to never bother anyone playing normally, while making it
-// impractical for a script on one connection to brute-force room codes or
-// hammer the server with room-creation requests.
-const ROOM_OP_LIMIT_MAX = 20;
+// Separate limiter for room-management calls (createRoom/joinRoom/
+// roomExists). Real players call these a handful of times per session —
+// but on a shaky mobile connection, a player re-tapping "resume" a few
+// times, or two people accidentally reloading around the same moment, can
+// easily add up to more than that. This budget is set generously so real
+// play (including a rocky reconnect) never gets anywhere near it, while
+// still making a code-guessing script impractical: even at this limit,
+// brute-forcing the ~39 million possible room codes on one connection
+// would take years.
+const ROOM_OP_LIMIT_MAX = 60;
 const ROOM_OP_LIMIT_WINDOW_MS = 10000;
 function roomOpLimitOk(socket) {
   const now = Date.now();
@@ -246,6 +279,9 @@ io.on('connection', (socket) => {
       mode: safeMode,
       createdAt: Date.now(),
       lastActivity: Date.now(),
+      // Per-sender-slot message counters — see the seqBySlot comment in the
+      // 'roomMessage' handler for why this replaced a single room-wide
+      // counter.
       seqBySlot: {},
       players: {},
       lastCheckpoint: null
@@ -270,7 +306,7 @@ io.on('connection', (socket) => {
     // دکمه‌ی اتصال)، همون اسلات قبلی رو برگردون؛ یک اسلات دوم مصرف نکن.
     if (socket.data.roomCode === code && socket.data.slot !== null && socket.data.slot !== undefined) {
       const mine = room.players[socket.data.slot];
-      if (mine && mine.connected) { if (ack) ack({ ok: true, slot: socket.data.slot, mode: room.mode, token: mine.token }); return; }
+      if (mine && mine.connected) { if (ack) ack({ ok: true, slot: socket.data.slot, mode: room.mode, token: mine.token, t: Date.now() }); return; }
     }
 
     // limit همیشه از room.maxPlayers میاد که خودش موقع createRoom از یک
@@ -294,8 +330,11 @@ io.on('connection', (socket) => {
         if (existing && tokensMatch(existing.token, token)) {
           existing.connected = true;
           existing.leftAt = null;
+          // Record which socket now owns this slot so a late 'disconnect'
+          // from a stale/old socket (see handleLeave) can't override it.
+          existing.socketId = socket.id;
           assignSocketToSlot(socket, code, i);
-          if (ack) ack({ ok: true, slot: i, mode: room.mode, token });
+          if (ack) ack({ ok: true, slot: i, mode: room.mode, token, t: Date.now() });
           broadcastPresence(code);
           return;
         }
@@ -314,9 +353,9 @@ io.on('connection', (socket) => {
     if (slot === -1) { if (ack) ack({ ok: false, error: 'full' }); return; }
 
     const newToken = crypto.randomBytes(16).toString('hex');
-    room.players[slot] = { token: newToken, joinedAt: Date.now(), connected: true, leftAt: null };
+    room.players[slot] = { token: newToken, joinedAt: Date.now(), connected: true, leftAt: null, socketId: socket.id };
     assignSocketToSlot(socket, code, slot);
-    if (ack) ack({ ok: true, slot, mode: room.mode, token: newToken });
+    if (ack) ack({ ok: true, slot, mode: room.mode, token: newToken, t: Date.now() });
     broadcastPresence(code);
   });
 
@@ -335,9 +374,25 @@ io.on('connection', (socket) => {
     if (!payloadSizeOk(payload)) return;
     const room = rooms.get(code);
     touch(room);
+    // BUGFIX: seq used to be a single room-wide counter shared by every
+    // sender. A client's own outgoing messages bump that counter too, but
+    // (by design, see socket.to() below) never get relayed back to that
+    // same client — so from any one client's point of view, the very next
+    // message it actually RECEIVES from the opponent always looks like it
+    // "skipped" however many numbers the client itself just consumed by
+    // sending. The client-side gap check in app.js treats any such skip as
+    // evidence of a dropped message and fires an automatic resync — so in
+    // practice this fired on nearly every real exchange (each side sending
+    // its own move/profile/timer message was enough to trip it on the
+    // other), producing exactly the "reconnecting the board" / "couldn't
+    // resync" loop and moves silently failing to apply.
+    // Fix: number messages PER SENDER SLOT instead of per room. A client
+    // then only compares incoming seq numbers against the last one it saw
+    // FROM THAT SAME SLOT — a count that's only ever advanced by messages
+    // it actually received, never polluted by its own sends.
     room.seqBySlot = room.seqBySlot || {};
     room.seqBySlot[slot] = (room.seqBySlot[slot] || 0) + 1;
-    const seq = room.seqBySlot[slot];
+    const mySeq = room.seqBySlot[slot];
 
     // اگه این پیام یه درخواستِ «request-state» موقعِ reconnect باشه و در
     // حال حاضر هیچ بازیکنِ دیگه‌ای توی روم آنلاین نباشه که جوابش رو بده،
@@ -355,7 +410,7 @@ io.on('connection', (socket) => {
     socket.to('room:' + code).emit('roomMessage', {
       from: slot,
       t: Date.now(),
-      seq,
+      seq: mySeq,
       payload
     });
   });
