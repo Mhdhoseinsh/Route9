@@ -1,61 +1,3 @@
-        /* ===== فونت‌های SF Arabic: ۸ وزن ===== */
-        /* پوشه fonts/ باید کنار index.html در گیت‌هاب‌پیجز باشه با همین اسم‌ها */
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Thin.woff2') format('woff2');
-            font-weight: 100;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Ultralight.woff2') format('woff2');
-            font-weight: 200;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Light.woff2') format('woff2');
-            font-weight: 300;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Regular.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Medium.woff2') format('woff2');
-            font-weight: 500;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Semibold.woff2') format('woff2');
-            font-weight: 600;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap
-        }
-        @font-face {
-            font-family: 'SFArabic';
-            src: url('fonts/SFArabic-Heavy.woff2') format('woff2');
-            font-weight: 800 900;
-            font-style: normal;
-            font-display: swap
-        }
         :root {
             --header-h: 62px;
             --bg-color: #000000;
@@ -76,6 +18,45 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none
         }
+        /* Full-screen cover shown while the page's resources (fonts,
+           images, scripts) are still loading, so the UI never appears
+           piece-by-piece. Faded out and removed once app.js confirms the
+           page has fully loaded — see the reveal logic near the top of
+           app.js. */
+        #preload-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: var(--bg-color);
+            opacity: 1;
+            transition: opacity .4s ease;
+        }
+        #preload-overlay.preload-hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #preload-overlay .preload-mark {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            color: var(--text-main);
+        }
+        #preload-overlay .preload-spinner {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--blue-color);
+            animation: preload-spin .8s linear infinite;
+        }
+        @keyframes preload-spin {
+            to { transform: rotate(360deg) }
+        }
         html {
             scrollbar-width: none;
             -ms-overflow-style: none
@@ -86,7 +67,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'SFArabic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             margin: 0;

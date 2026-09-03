@@ -16,15 +16,32 @@
             function safeStorageSet(key, value) {
                 try { localStorage.setItem(key, value); return !0 } catch (e) { return !1 }
             }
-            // Registering this actually turns on the caching strategy already
-            // written in sw.js (fonts/icons/webp served from disk on repeat
-            // visits) — previously the file existed but nothing ever called
-            // register(), so it never ran.
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('sw.js').catch(() => {})
-                });
-            }
+
+            // ===== Preload overlay reveal =========================
+            // Keeps the full-screen cover (see #preload-overlay in
+            // index.html/style.css) up until the page has genuinely
+            // finished loading everything — fonts, images, both scripts —
+            // then fades it out so the UI appears all at once instead of
+            // popping together piece by piece. A safety timeout guarantees
+            // it can never get stuck covering the site if some resource
+            // (e.g. the third-party ad script) never fires 'load'.
+            (function() {
+                const overlay = document.getElementById('preload-overlay');
+                if (!overlay) return;
+                let revealed = !1;
+                function reveal() {
+                    if (revealed) return;
+                    revealed = !0;
+                    overlay.classList.add('preload-hide');
+                    setTimeout(() => overlay.remove(), 450)
+                }
+                if (document.readyState === 'complete') {
+                    reveal()
+                } else {
+                    window.addEventListener('load', reveal)
+                }
+                setTimeout(reveal, 3500)
+            })();
 
             const canvas = document.getElementById('boardCanvas');
             const ctx = canvas.getContext('2d');

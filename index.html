@@ -10,8 +10,6 @@
     <meta name="description" content="Route 9 — a strategy board game, play pass-and-play offline or with friends online. Block your rivals with walls and race to the finish in 1v1, 2v2 team battles, or Wolf vs Sheep mode.">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8Bu/s6v7A3fn53EAL8/THEdVQPJDKl1z+/t+DkQhq8M=' https://unpkg.com https://cdn.yektanet.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.yektanet.com https://*.yektanet.com; font-src 'self' data:; connect-src 'self' https://route9.onrender.com wss://route9.onrender.com https://cdn.yektanet.com https://*.yektanet.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon.png">
-    <link rel="apple-touch-icon" href="icon-180.png">
     <title id="page-title">Route 9</title>
 
     <link rel="stylesheet" href="style.css?v=4">
@@ -22,6 +20,10 @@
 </head>
 
 <body>
+    <div id="preload-overlay" aria-hidden="true">
+        <div class="preload-mark">Route 9</div>
+        <div class="preload-spinner"></div>
+    </div>
     <div id="top-controls">
         <button class="top-ctrl-btn top-kebab-btn" id="btn-top-menu" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor">
