@@ -28,10 +28,22 @@
             (function() {
                 const overlay = document.getElementById('preload-overlay');
                 if (!overlay) return;
+                const VISITED_KEY = 'r9-visited';
+
+                // Returning visitor: the inline head script already added
+                // .r9-skip-preload before the page painted, so this overlay
+                // was never actually shown (display:none from frame one) —
+                // just drop the now-useless element, no fade, no waiting.
+                if (safeStorageGet(VISITED_KEY)) {
+                    overlay.remove();
+                    return
+                }
+
                 let revealed = !1;
                 function reveal() {
                     if (revealed) return;
                     revealed = !0;
+                    safeStorageSet(VISITED_KEY, '1');
                     overlay.classList.add('preload-hide');
                     setTimeout(() => overlay.remove(), 450)
                 }
