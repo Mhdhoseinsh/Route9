@@ -251,8 +251,8 @@
             height: 60%
         }
         .mode-icon.icon-hunter svg {
-            width: 105%;
-            height: 105%
+            width: 85%;
+            height: 85%
         }
         .mode-icon.icon-classic {
             background: linear-gradient(135deg, #ffd76b, #f2994a 75%);
